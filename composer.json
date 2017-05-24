@@ -1,0 +1,30 @@
+{
+    "name": "kamermans/guzzle-oauth-subscriber",
+    "description": "OAuth 2.0 client for Guzzle 4, 5 and 6+",
+    "keywords": ["oauth", "guzzle"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve Kamerman",
+            "email": "stevekamerman@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+    },
+    "autoload": {
+        "psr-4": {
+            "kamermans\\OAuth2\\": "src/OAuth2"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "kamermans\\OAuth2\\Tests\\": "tests/OAuth2"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1-dev"
+        }
+    }
+}
