@@ -31,11 +31,11 @@ trait TokenSerializer
      */
     public function serialize()
     {
-        return serialize([
+        return [
             'access_token'  => $this->accessToken,
             'refresh_token' => $this->refreshToken,
             'expires_at'    => $this->expiresAt,
-        ]);
+        ];
     }
 
     /**
@@ -44,8 +44,7 @@ trait TokenSerializer
      */
     public function unserialize($data)
     {
-        $data = unserialize($data);
-        if (!is_array($data) || !isset($data['access_token'])) {
+        if (!isset($data['access_token'])) {
             throw new \InvalidArgumentException('Unable to create a RawToken without an "access_token"');
         }
 

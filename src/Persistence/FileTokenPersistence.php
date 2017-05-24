@@ -27,7 +27,7 @@ class FileTokenPersistence implements TokenPersistenceInterface
             return null;
         }
 
-        $data = json_decode(file_get_contents($this->filepath), true);
+        $data = @json_decode(file_get_contents($this->filepath), true);
 
         if (false === $data) {
             return null;
@@ -39,7 +39,7 @@ class FileTokenPersistence implements TokenPersistenceInterface
     public function deleteToken()
     {
         if (file_exists($this->filepath)) {
-            unlink($this->filepath);
+            @unlink($this->filepath);
         }
     }
 }
