@@ -21,6 +21,12 @@ class OAuth2Middleware extends OAuth2Handler
     public function __invoke(callable $handler)
     {
         return function (RequestInterface $request, array $options) use ($handler) {
+
+            // Only sign requests using "auth"="oauth"
+            if (!isset($options['auth']) || $options['auth'] !== 'oauth') {
+                return $handler($request, $options);
+            }
+
             $request = $this->signRequest($request);
 
             return $handler($request, $options)->then(

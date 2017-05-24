@@ -13,14 +13,6 @@ use kamermans\OAuth2\OAuth2Handler;
 use kamermans\OAuth2\Token\RawToken;
 use kamermans\OAuth2\Tests\BaseTestCase;
 
-/**
- * OAuth2 plugin.
- *
- * @author Steve Kamerman <stevekamerman@gmail.com>
- * @author Matthieu Moquet <matthieu@moquet.net>
- *
- * @link http://tools.ietf.org/html/rfc6749 OAuth2 specification
- */
 class OAuth2HandlerTest extends BaseTestCase
 {
 
