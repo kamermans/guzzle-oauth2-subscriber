@@ -42,7 +42,7 @@ trait TokenSerializer
      * Unserialize token data
      * @return self
      */
-    public function unserialize($data)
+    public function unserialize(array $data)
     {
         if (!isset($data['access_token'])) {
             throw new \InvalidArgumentException('Unable to create a RawToken without an "access_token"');
