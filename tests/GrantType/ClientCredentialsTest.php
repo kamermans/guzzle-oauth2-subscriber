@@ -2,7 +2,7 @@
 
 namespace kamermans\OAuth2\Tests\GrantType;
 
-use \kamermans\OAuth2\Tests\BaseTestCase;
+use kamermans\OAuth2\Tests\BaseTestCase;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -106,13 +106,7 @@ class ClientCredentialsTest extends \kamermans\OAuth2\Tests\BaseTestCase
             'scope' => 'foo,bar',
         ]);
 
-        $signer = $this->getMockBuilder('\kamermans\OAuth2\Signer\ClientCredentials\BasicAuth')
-            ->setMethods(['sign'])
-            ->getMock();
-
-        $signer->expects($this->once())
-            ->method('sign')
-            ->with($this->anything(), 'foo', 'bar');
+        $signer = new \kamermans\OAuth2\Signer\ClientCredentials\BasicAuth();
 
         $data = $grant->getRawData($signer);
         $request_body = $history->getLastRequest()->getBody();

@@ -2,7 +2,7 @@
 
 namespace kamermans\OAuth2\Tests\GrantType;
 
-use \kamermans\OAuth2\Tests\BaseTestCase;
+use kamermans\OAuth2\Tests\BaseTestCase;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;

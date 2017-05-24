@@ -2,7 +2,7 @@
 
 namespace kamermans\OAuth2\Tests\Signer\AccessToken;
 
-use \kamermans\OAuth2\Tests\BaseTestCase;
+use kamermans\OAuth2\Tests\BaseTestCase;
 use GuzzleHttp\Message\Request;
 use kamermans\OAuth2\Signer\AccessToken\BasicAuth;
 

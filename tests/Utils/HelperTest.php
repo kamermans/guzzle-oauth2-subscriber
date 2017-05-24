@@ -2,7 +2,7 @@
 
 namespace kamermans\OAuth2\Tests\Utils;
 
-use \kamermans\OAuth2\Tests\BaseTestCase;
+use kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Utils\Helper;
 
 class HelperTest extends \kamermans\OAuth2\Tests\BaseTestCase

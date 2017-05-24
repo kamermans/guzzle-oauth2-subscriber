@@ -2,7 +2,7 @@
 
 namespace kamermans\OAuth2\Tests\Token;
 
-use \kamermans\OAuth2\Tests\BaseTestCase;
+use kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Token\RawToken;
 
 class RawTokenTest extends \kamermans\OAuth2\Tests\BaseTestCase
@@ -30,8 +30,7 @@ class RawTokenTest extends \kamermans\OAuth2\Tests\BaseTestCase
             self::$tokenData['expires_at']
         );
 
-        $result = serialize(self::$tokenData);
-        $this->assertEquals($result, $token->serialize());
+        $this->assertEquals(self::$tokenData, $token->serialize());
     }
 
     public function testUnserialize()

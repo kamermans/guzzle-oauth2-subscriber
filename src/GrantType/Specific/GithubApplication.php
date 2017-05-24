@@ -6,6 +6,7 @@ use GuzzleHttp\ClientInterface;
 use kamermans\OAuth2\Utils\Collection;
 use GuzzleHttp\Message\Response;
 use GuzzleHttp\Stream\Stream;
+use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\GrantType\GrantTypeInterface;
 use kamermans\OAuth2\Signer\ClientCredentials\SignerInterface;
@@ -56,8 +57,14 @@ class GithubApplication implements GrantTypeInterface
 
     public function getRawData(SignerInterface $clientCredentialsSigner, $refreshToken = null)
     {
-        $request = $this->client->createRequest('POST', null);
-        $request->setBody($this->getPostBody());
+        if (Helper::guzzleIs('>=', 6)) {
+            $request = (new \GuzzleHttp\Psr7\Request('POST', $this->client->getConfig()['base_uri']))
+                        ->withBody($this->getPostBody())
+                        ->withHeader('Content-Type', 'application/x-www-form-urlencoded');
+        } else {
+            $request = $this->client->createRequest('POST', null);
+            $request->setBody($this->getPostBody());
+        }
 
         $clientCredentialsSigner->sign(
             $request,
@@ -92,7 +99,7 @@ class GithubApplication implements GrantTypeInterface
         }
         */
 
-        $data = $response->json();
+        $data = json_decode($response->getBody(), true);
         $data['access_token'] = $data['token'];
         unset($data['token']);
 
@@ -117,7 +124,9 @@ class GithubApplication implements GrantTypeInterface
             $postBody['note_url'] = $this->config['note_url'];
         }
 
-        return Stream::factory(json_encode($postBody));
+        $postBody = json_encode($postBody);
+
+        return Helper::guzzleIs('<', 6)? Stream::factory($postBody): \GuzzleHttp\Psr7\stream_for($postBody);
     }
 
     /**

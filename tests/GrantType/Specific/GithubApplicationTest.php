@@ -2,13 +2,19 @@
 
 namespace kamermans\OAuth2\Tests\GrantType;
 
-use \kamermans\OAuth2\Tests\BaseTestCase;
+use kamermans\OAuth2\Tests\BaseTestCase;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Client;
-use GuzzleHttp\Subscriber\Mock as MockResponder;
-use GuzzleHttp\Subscriber\History;
 use GuzzleHttp\Message\Request;
 use GuzzleHttp\Message\Response;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response as Psr7Response;
+use GuzzleHttp\Psr7\Request as Psr7Request;
+use GuzzleHttp\Subscriber\Mock as MockResponder;
+use GuzzleHttp\Subscriber\History;
+use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\GrantType\Specific\GithubApplication;
 
 class GithubApplicationTest extends \kamermans\OAuth2\Tests\BaseTestCase
@@ -34,6 +40,60 @@ class GithubApplicationTest extends \kamermans\OAuth2\Tests\BaseTestCase
     }
 
     public function testGetRawData()
+    {
+        if (Helper::guzzleIs('<', 6)) {
+            $this->doGetRawDataLegacy();
+        } else {
+            $this->doGetRawData6Plus();
+        }
+    }
+
+    protected function doGetRawData6Plus()
+    {
+        $response_data = [
+            'foo' => 'bar',
+            // GitHub responds with "token" instead of "access_token"
+            'token' => '0123456789abcdef',
+        ];
+
+        $responder = new MockHandler([
+            new Psr7Response(200, [], json_encode($response_data)),
+        ]);
+
+        $container = [];
+        $history = Middleware::history($container);
+
+        $handler = HandlerStack::create($responder);
+        $handler->push($history);
+
+        $client = new Client([
+            'handler'  => $handler,
+            'base_uri' => 'http://localhost:10000/oauth_token',
+        ]);
+
+        $grant = new GithubApplication($client, [
+            'client_id' => 'foo',
+            'client_secret' => 'bar',
+            'username' => 'bilbo',
+            'password' => 'baggins',
+            'note' => 'github test',
+        ]);
+
+        $signer = new \kamermans\OAuth2\Signer\ClientCredentials\BasicAuth();
+
+        $raw_data = $grant->getRawData($signer);
+
+        $this->assertEquals('bar', $raw_data['foo']);
+        $this->assertEquals('0123456789abcdef', $raw_data['access_token']);
+
+        $this->assertNotEmpty($container);
+        $request_body = json_decode($container[0]['request']->getBody(), true);
+        $this->assertEquals('foo', $request_body['client_id']);
+        $this->assertEquals('bar', $request_body['client_secret']);
+        $this->assertEquals('github test', $request_body['note']);
+    }
+
+    protected function doGetRawDataLegacy()
     {
         $response_data = [
             'foo' => 'bar',

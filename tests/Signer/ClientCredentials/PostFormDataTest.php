@@ -2,7 +2,7 @@
 
 namespace kamermans\OAuth2\Tests\Signer\ClientCredentials;
 
-use \kamermans\OAuth2\Tests\BaseTestCase;
+use kamermans\OAuth2\Tests\BaseTestCase;
 use GuzzleHttp\Message\Request;
 use GuzzleHttp\Post\PostBody;
 use kamermans\OAuth2\Signer\ClientCredentials\PostFormData;

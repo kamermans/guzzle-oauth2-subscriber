@@ -15,7 +15,7 @@ use GuzzleHttp\Subscriber\History;
 use GuzzleHttp\Subscriber\Mock as MockResponder;
 use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\GrantType\AuthorizationCode;
-use \kamermans\OAuth2\Tests\BaseTestCase;
+use kamermans\OAuth2\Tests\BaseTestCase;
 
 class AuthorizationCodeTest extends \kamermans\OAuth2\Tests\BaseTestCase
 {
@@ -113,13 +113,7 @@ class AuthorizationCodeTest extends \kamermans\OAuth2\Tests\BaseTestCase
             'redirect_uri' => 'http://test.com',
         ]);
 
-        $signer = $this->getMockBuilder('\kamermans\OAuth2\Signer\ClientCredentials\BasicAuth')
-            ->setMethods(['sign'])
-            ->getMock();
-
-        $signer->expects($this->once())
-            ->method('sign')
-            ->with($this->anything(), 'foo', 'bar');
+        $signer = new \kamermans\OAuth2\Signer\ClientCredentials\BasicAuth();
 
         $data = $grant->getRawData($signer);
         $request_body = $history->getLastRequest()->getBody();

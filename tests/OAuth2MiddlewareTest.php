@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\Request;
 use GuzzleHttp\Message\Response;
 use kamermans\OAuth2\Utils\Helper;
-use kamermans\OAuth2\OAuth2Subscriber;
+use kamermans\OAuth2\OAuth2Middleware;
 use kamermans\OAuth2\Token\RawToken;
 use kamermans\OAuth2\Tests\BaseTestCase;
 
@@ -21,13 +21,13 @@ use kamermans\OAuth2\Tests\BaseTestCase;
  *
  * @link http://tools.ietf.org/html/rfc6749 OAuth2 specification
  */
-class OAuth2SubscriberTest extends BaseTestCase
+class OAuth2MiddlewareTest extends BaseTestCase
 {
 
     public function setUp()
     {
-        if (Helper::guzzleIs('>=', 6)) {
-            $this->markTestSkipped("Guzzle 4 or 5 is required for this test");
+        if (Helper::guzzleIs('<', 6)) {
+            $this->markTestSkipped("Guzzle 6+ is required for this test");
         }
     }
 
@@ -38,7 +38,7 @@ class OAuth2SubscriberTest extends BaseTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $sub = new OAuth2Subscriber($grant);
+        $sub = new OAuth2Middleware($grant);
     }
 
     public function testOnBeforeDoesNotTriggerForNonOAuthRequests()
@@ -56,8 +56,8 @@ class OAuth2SubscriberTest extends BaseTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        // Setup OAuth2Subscriber
-        $sub = new OAuth2Subscriber($grant);
+        // Setup OAuth2Middleware
+        $sub = new OAuth2Middleware($grant);
         $sub->setAccessTokenSigner($signer);
 
         $client = new Client();
@@ -94,8 +94,8 @@ class OAuth2SubscriberTest extends BaseTestCase
                 'expires_in' => 3600,
             ]));
 
-        // Setup OAuth2Subscriber
-        $sub = new OAuth2Subscriber($grant);
+        // Setup OAuth2Middleware
+        $sub = new OAuth2Middleware($grant);
         $sub->setAccessTokenSigner($signer);
 
         $client = new Client();
@@ -117,8 +117,8 @@ class OAuth2SubscriberTest extends BaseTestCase
         $grant->expects($this->exactly(0))
             ->method('getRawData');
 
-        // Setup OAuth2Subscriber
-        $sub = new OAuth2Subscriber($grant);
+        // Setup OAuth2Middleware
+        $sub = new OAuth2Middleware($grant);
 
         $client = new Client();
         $request = new Request('GET', '/');
@@ -142,8 +142,8 @@ class OAuth2SubscriberTest extends BaseTestCase
         $grant->expects($this->exactly(0))
             ->method('getRawData');
 
-        // Setup OAuth2Subscriber
-        $sub = new OAuth2Subscriber($grant);
+        // Setup OAuth2Middleware
+        $sub = new OAuth2Middleware($grant);
 
         $client = new Client();
         $request = new Request('GET', '/', [], null, ['auth' => 'oauth']);
@@ -173,8 +173,8 @@ class OAuth2SubscriberTest extends BaseTestCase
         $grant->expects($this->exactly(0))
             ->method('getRawData');
 
-        // Setup OAuth2Subscriber
-        $sub = new OAuth2Subscriber($grant);
+        // Setup OAuth2Middleware
+        $sub = new OAuth2Middleware($grant);
 
         $client = new Client();
         $request = new Request('GET', '/', [], null, ['auth' => 'oauth']);
@@ -214,8 +214,8 @@ class OAuth2SubscriberTest extends BaseTestCase
                 'expires_in' => 3600,
             ]));
 
-        // Setup OAuth2Subscriber
-        $sub = new OAuth2Subscriber($grant);
+        // Setup OAuth2Middleware
+        $sub = new OAuth2Middleware($grant);
         $sub->setAccessTokenSigner($signer);
 
         $request = new Request('GET', '/', [], null, ['auth' => 'oauth']);

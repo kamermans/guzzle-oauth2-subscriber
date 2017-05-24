@@ -157,12 +157,12 @@ class OAuth2Handler
     public function getAccessToken()
     {
         // If token is not set try to get it from the persistent storage.
-        if (null === $this->rawToken) {
+        if ($this->rawToken === null) {
             $this->rawToken = $this->tokenPersistence->restoreToken(new Token\RawToken());
         }
 
         // If token is not set or expired then try to acquire a new one...
-        if (null === $this->rawToken || $this->rawToken->isExpired()) {
+        if ($this->rawToken === null || $this->rawToken->isExpired()) {
             $this->tokenPersistence->deleteToken();
 
             // Hydrate `rawToken` with a new access token
