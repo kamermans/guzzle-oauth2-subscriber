@@ -20,7 +20,7 @@ class Helper
             return self::fuzzyVersionCompare($version, $guzzle_version);
         }
 
-        return version_compare($version, $guzzle_version, $operator);
+        return version_compare($guzzle_version, $version, $operator);
     }
 
     private static function fuzzyVersionCompare($version, $guzzle_version)
@@ -36,6 +36,6 @@ class Helper
             $version = implode('.', array_slice(explode('.', $version), 0, $num_guzzle_segments));
         }
 
-        return version_compare($version, $guzzle_version, '==');
+        return version_compare($guzzle_version, $version, '==');
     }
 }

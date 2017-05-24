@@ -11,10 +11,10 @@ class HelperTest extends PHPUnit_Framework_TestCase
     /**
      * @dataProvider guzzleVersionTestProvider
      */
-    public function testGuzzleIs($my_version, $operator, $mock_version, $expected)
+    public function testGuzzleIs($test_version, $operator, $mock_version, $expected)
     {
-        $result = Helper::guzzleIs($operator, $my_version, $mock_version);
-        $this->assertSame($expected, $result, "Expression failed: $my_version $operator $mock_version === ".var_export($expected, true));
+        $result = Helper::guzzleIs($operator, $mock_version, $test_version);
+        $this->assertSame($expected, $result, "Expression failed: $test_version $operator $mock_version === ".var_export($expected, true));
     }
 
     public function guzzleVersionTestProvider()

@@ -50,9 +50,9 @@ class AuthorizationCode implements GrantTypeInterface
     public function getRawData(SignerInterface $clientCredentialsSigner, $refreshToken = null)
     {
         if (Helper::guzzleIs('>=', 6)) {
-            $request = new \GuzzleHttp\Psr7\Request('POST', null, [
-                'body' => $this->getPostBody(),
-            ]);
+            $request = (new \GuzzleHttp\Psr7\Request('POST', $this->client->getConfig()['base_uri']))
+                        ->withBody($this->getPostBody())
+                        ->withHeader('Content-Type', 'application/x-www-form-urlencoded');
         } else {
             $request = $this->client->createRequest('POST', null);
             $request->setBody($this->getPostBody());
@@ -66,7 +66,7 @@ class AuthorizationCode implements GrantTypeInterface
 
         $response = $this->client->send($request);
 
-        return $response->json();
+        return json_decode($response->getBody(), true);
     }
 
     /**
@@ -74,6 +74,23 @@ class AuthorizationCode implements GrantTypeInterface
      */
     protected function getPostBody()
     {
+        if (Helper::guzzleIs('>=', '6')) {
+            $data = [
+                'grant_type' => 'authorization_code',
+                'code' => $this->config['code'],
+            ];
+
+            if ($this->config['scope']) {
+                $data['scope'] = $this->config['scope'];
+            }
+
+            if ($this->config['redirect_uri']) {
+                $data['redirect_uri'] = $this->config['redirect_uri'];
+            }
+
+            return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
+        }
+
         $postBody = new PostBody();
         $postBody->replaceFields([
             'grant_type' => 'authorization_code',
