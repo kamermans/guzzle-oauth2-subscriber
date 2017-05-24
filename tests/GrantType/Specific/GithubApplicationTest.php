@@ -2,7 +2,7 @@
 
 namespace kamermans\OAuth2\Tests\GrantType;
 
-use PHPUnit_Framework_TestCase;
+use \kamermans\OAuth2\Tests\BaseTestCase;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Client;
 use GuzzleHttp\Subscriber\Mock as MockResponder;
@@ -11,7 +11,7 @@ use GuzzleHttp\Message\Request;
 use GuzzleHttp\Message\Response;
 use kamermans\OAuth2\GrantType\Specific\GithubApplication;
 
-class GithubApplicationTest extends PHPUnit_Framework_TestCase
+class GithubApplicationTest extends \kamermans\OAuth2\Tests\BaseTestCase
 {
     public function testConstruct()
     {

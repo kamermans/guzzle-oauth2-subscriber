@@ -2,11 +2,11 @@
 
 namespace kamermans\OAuth2\Tests\Persistence;
 
-use PHPUnit_Framework_TestCase;
+use \kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Token\RawToken;
 use kamermans\OAuth2\Token\RawTokenFactory;
 
-abstract class TokenPersistenceTestBase extends PHPUnit_Framework_TestCase
+abstract class TokenPersistenceTestBase extends \kamermans\OAuth2\Tests\BaseTestCase
 {
     abstract public function getInstance();
 

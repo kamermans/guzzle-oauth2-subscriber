@@ -2,12 +2,12 @@
 
 namespace kamermans\OAuth2\Tests\Signer\ClientCredentials;
 
-use PHPUnit_Framework_TestCase;
+use \kamermans\OAuth2\Tests\BaseTestCase;
 use GuzzleHttp\Message\Request;
 use GuzzleHttp\Post\PostBody;
 use kamermans\OAuth2\Signer\ClientCredentials\PostFormData;
 
-class PostFormDataTest extends PHPUnit_Framework_TestCase
+class PostFormDataTest extends \kamermans\OAuth2\Tests\BaseTestCase
 {
     public function testSign()
     {

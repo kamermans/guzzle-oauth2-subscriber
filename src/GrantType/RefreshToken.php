@@ -4,6 +4,7 @@ namespace kamermans\OAuth2\GrantType;
 
 use GuzzleHttp\Post\PostBody;
 use GuzzleHttp\ClientInterface;
+use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\Utils\Collection;
 use kamermans\OAuth2\Signer\ClientCredentials\SignerInterface;
 
@@ -47,20 +48,15 @@ class RefreshToken implements GrantTypeInterface
 
     public function getRawData(SignerInterface $clientCredentialsSigner, $refreshToken = null)
     {
-        $postBody = new PostBody();
-        $postBody->replaceFields([
-            'grant_type' => 'refresh_token',
-            // If no refresh token was provided to the method, use the one
-            // provided to the constructor.
-            'refresh_token' => $refreshToken ?: $this->config['refresh_token'],
-        ]);
-
-        if ($this->config['scope']) {
-            $postBody->setField('scope', $this->config['scope']);
+        if (Helper::guzzleIs('>=', 6)) {
+            $request = (new \GuzzleHttp\Psr7\Request('POST', $this->client->getConfig()['base_uri']))
+                        ->withBody($this->getPostBody($refreshToken))
+                        ->withHeader('Content-Type', 'application/x-www-form-urlencoded');
+        } else {
+            $request = $this->client->createRequest('POST', null);
+            $request->setBody($this->getPostBody($refreshToken));
         }
 
-        $request = $this->client->createRequest('POST', null);
-        $request->setBody($postBody);
         $clientCredentialsSigner->sign(
             $request,
             $this->config['client_id'],
@@ -69,6 +65,41 @@ class RefreshToken implements GrantTypeInterface
 
         $response = $this->client->send($request);
 
-        return $response->json();
+        return json_decode($response->getBody(), true);
+    }
+
+    /**
+    * @return PostBody
+    */
+    protected function getPostBody($refreshToken)
+    {
+       if (Helper::guzzleIs('>=', '6')) {
+           $data = [
+                'grant_type' => 'refresh_token',
+                // If no refresh token was provided to the method, use the one
+                // provided to the constructor.
+                'refresh_token' => $refreshToken ?: $this->config['refresh_token'],
+           ];
+
+           if ($this->config['scope']) {
+               $data['scope'] = $this->config['scope'];
+           }
+
+           return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
+       }
+
+       $postBody = new PostBody();
+       $postBody->replaceFields([
+            'grant_type' => 'refresh_token',
+            // If no refresh token was provided to the method, use the one
+            // provided to the constructor.
+            'refresh_token' => $refreshToken ?: $this->config['refresh_token'],
+       ]);
+
+       if ($this->config['scope']) {
+            $postBody->setField('scope', $this->config['scope']);
+       }
+
+        return $postBody;
     }
 }

@@ -11,7 +11,7 @@ use GuzzleHttp\Message\Response;
 use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\OAuth2Subscriber;
 use kamermans\OAuth2\Token\RawToken;
-use PHPUnit_Framework_TestCase;
+use \kamermans\OAuth2\Tests\BaseTestCase;
 
 /**
  * OAuth2 plugin.
@@ -21,7 +21,7 @@ use PHPUnit_Framework_TestCase;
  *
  * @link http://tools.ietf.org/html/rfc6749 OAuth2 specification
  */
-class OAuth2SubscriberTest extends PHPUnit_Framework_TestCase
+class OAuth2SubscriberTest extends BaseTestCase
 {
     public function testConstruct()
     {

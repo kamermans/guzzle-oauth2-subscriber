@@ -2,11 +2,11 @@
 
 namespace kamermans\OAuth2\Tests\Token;
 
-use PHPUnit_Framework_TestCase;
+use \kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Token\RawToken;
 use kamermans\OAuth2\Token\RawTokenFactory;
 
-class RawTokenFactoryTest extends PHPUnit_Framework_TestCase
+class RawTokenFactoryTest extends \kamermans\OAuth2\Tests\BaseTestCase
 {
     public function testInvoke()
     {

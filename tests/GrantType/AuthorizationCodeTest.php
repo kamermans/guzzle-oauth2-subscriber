@@ -15,9 +15,9 @@ use GuzzleHttp\Subscriber\History;
 use GuzzleHttp\Subscriber\Mock as MockResponder;
 use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\GrantType\AuthorizationCode;
-use PHPUnit_Framework_TestCase;
+use \kamermans\OAuth2\Tests\BaseTestCase;
 
-class AuthorizationCodeTest extends PHPUnit_Framework_TestCase
+class AuthorizationCodeTest extends \kamermans\OAuth2\Tests\BaseTestCase
 {
     public function testConstruct()
     {

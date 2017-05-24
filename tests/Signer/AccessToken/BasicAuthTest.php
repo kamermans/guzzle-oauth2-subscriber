@@ -2,11 +2,11 @@
 
 namespace kamermans\OAuth2\Tests\Signer\AccessToken;
 
-use PHPUnit_Framework_TestCase;
+use \kamermans\OAuth2\Tests\BaseTestCase;
 use GuzzleHttp\Message\Request;
 use kamermans\OAuth2\Signer\AccessToken\BasicAuth;
 
-class BasicAuthTest extends PHPUnit_Framework_TestCase
+class BasicAuthTest extends \kamermans\OAuth2\Tests\BaseTestCase
 {
     public function testSign()
     {

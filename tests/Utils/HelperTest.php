@@ -2,10 +2,10 @@
 
 namespace kamermans\OAuth2\Tests\Utils;
 
-use PHPUnit_Framework_TestCase;
+use \kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Utils\Helper;
 
-class HelperTest extends PHPUnit_Framework_TestCase
+class HelperTest extends \kamermans\OAuth2\Tests\BaseTestCase
 {
 
     /**
