@@ -17,7 +17,7 @@ use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\GrantType\AuthorizationCode;
 use kamermans\OAuth2\Tests\BaseTestCase;
 
-class AuthorizationCodeTest extends \kamermans\OAuth2\Tests\BaseTestCase
+class AuthorizationCodeTest extends BaseTestCase
 {
     public function testConstruct()
     {

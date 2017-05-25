@@ -17,7 +17,7 @@ use GuzzleHttp\Subscriber\History;
 use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\GrantType\Specific\GithubApplication;
 
-class GithubApplicationTest extends \kamermans\OAuth2\Tests\BaseTestCase
+class GithubApplicationTest extends BaseTestCase
 {
     public function testConstruct()
     {

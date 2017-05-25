@@ -2,12 +2,13 @@
 
 namespace kamermans\OAuth2\Tests\Signer\ClientCredentials;
 
-use kamermans\OAuth2\Tests\BaseTestCase;
-use GuzzleHttp\Message\Request;
 use GuzzleHttp\Post\PostBody;
+use GuzzleHttp\Message\Request;
+use kamermans\OAuth2\Utils\Helper;
+use kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Signer\ClientCredentials\PostFormData;
 
-class PostFormDataTest extends \kamermans\OAuth2\Tests\BaseTestCase
+class PostFormDataTest extends BaseTestCase
 {
     public function testSign()
     {
@@ -17,14 +18,16 @@ class PostFormDataTest extends \kamermans\OAuth2\Tests\BaseTestCase
         $clientIdFieldName = 'client_id';
         $clientSecretFieldName = 'client_secret';
 
-        $request = new Request('GET', '/');
-        $request->setBody(new PostBody());
+        $request = $this->createRequest('GET', '/', [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ]);
+        $request = $this->setPostBody($request, []);
 
         $signer = new PostFormData();
-        $signer->sign($request, $clientId, $clientSecret);
+        $request = $signer->sign($request, $clientId, $clientSecret);
 
-        $this->assertEquals($clientId, $request->getBody()->getField($clientIdFieldName));
-        $this->assertEquals($clientSecret, $request->getBody()->getField($clientSecretFieldName));
+        $this->assertEquals($clientId, $this->getFormPostBodyValue($request, $clientIdFieldName));
+        $this->assertEquals($clientSecret, $this->getFormPostBodyValue($request, $clientSecretFieldName));
     }
 
     public function testSignCustomFields()
@@ -35,13 +38,15 @@ class PostFormDataTest extends \kamermans\OAuth2\Tests\BaseTestCase
         $clientIdFieldName = 'foo_id';
         $clientSecretFieldName = 'foo_secret';
 
-        $request = new Request('GET', '/');
-        $request->setBody(new PostBody());
+        $request = $this->createRequest('GET', '/', [
+            'Content-Type' => 'application/x-www-form-urlencoded',
+        ]);
+        $request = $this->setPostBody($request, []);
 
         $signer = new PostFormData($clientIdFieldName, $clientSecretFieldName);
-        $signer->sign($request, $clientId, $clientSecret);
+        $request = $signer->sign($request, $clientId, $clientSecret);
 
-        $this->assertEquals($clientId, $request->getBody()->getField($clientIdFieldName));
-        $this->assertEquals($clientSecret, $request->getBody()->getField($clientSecretFieldName));
+        $this->assertEquals($clientId, $this->getFormPostBodyValue($request, $clientIdFieldName));
+        $this->assertEquals($clientSecret, $this->getFormPostBodyValue($request, $clientSecretFieldName));
     }
 }

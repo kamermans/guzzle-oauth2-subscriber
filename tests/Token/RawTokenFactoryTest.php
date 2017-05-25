@@ -6,7 +6,7 @@ use kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Token\RawToken;
 use kamermans\OAuth2\Token\RawTokenFactory;
 
-class RawTokenFactoryTest extends \kamermans\OAuth2\Tests\BaseTestCase
+class RawTokenFactoryTest extends BaseTestCase
 {
     public function testInvoke()
     {

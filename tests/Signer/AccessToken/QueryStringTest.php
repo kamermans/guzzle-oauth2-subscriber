@@ -2,33 +2,34 @@
 
 namespace kamermans\OAuth2\Tests\Signer\AccessToken;
 
-use kamermans\OAuth2\Tests\BaseTestCase;
 use GuzzleHttp\Message\Request;
+use kamermans\OAuth2\Utils\Helper;
+use kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Signer\AccessToken\QueryString;
 
-class QueryStringTest extends \kamermans\OAuth2\Tests\BaseTestCase
+class QueryStringTest extends BaseTestCase
 {
     public function testSign()
     {
         $fieldName = 'access_token';
 
-        $request = new Request('GET', '/');
+        $request = $this->createRequest('GET', '/');
 
         $signer = new QueryString();
-        $signer->sign($request, 'foobar');
+        $request = $signer->sign($request, 'foobar');
 
-        $this->assertEquals('foobar', $request->getQuery()->get($fieldName));
+        $this->assertEquals('foobar', $this->getQueryStringValue($request, $fieldName));
     }
 
     public function testSignCustomField()
     {
         $fieldName = 'someotherfieldname';
 
-        $request = new Request('GET', '/');
+        $request = $this->createRequest('GET', '/');
 
         $signer = new QueryString($fieldName);
-        $signer->sign($request, 'foobar');
+        $request = $signer->sign($request, 'foobar');
 
-        $this->assertEquals('foobar', $request->getQuery()->get($fieldName));
+        $this->assertEquals('foobar', $this->getQueryStringValue($request, $fieldName));
     }
 }

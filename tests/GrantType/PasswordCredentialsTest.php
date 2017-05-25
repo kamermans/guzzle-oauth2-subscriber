@@ -16,7 +16,7 @@ use GuzzleHttp\Message\Response;
 use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\GrantType\PasswordCredentials;
 
-class PasswordCredentialsTest extends \kamermans\OAuth2\Tests\BaseTestCase
+class PasswordCredentialsTest extends BaseTestCase
 {
     public function testConstruct()
     {

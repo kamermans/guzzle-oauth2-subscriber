@@ -5,7 +5,7 @@ namespace kamermans\OAuth2\Tests\Token;
 use kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Token\RawToken;
 
-class RawTokenTest extends \kamermans\OAuth2\Tests\BaseTestCase
+class RawTokenTest extends BaseTestCase
 {
     protected static $tokenData = [
         'access_token' => '01234567890123456789abcdef',

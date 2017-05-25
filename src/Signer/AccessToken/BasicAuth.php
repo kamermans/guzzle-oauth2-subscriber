@@ -8,7 +8,7 @@ class BasicAuth implements SignerInterface
 {
     public function sign($request, $accessToken)
     {
-        if (Helper::guzzleIs('~', 6)) {
+        if (Helper::guzzleIs('>=', 6)) {
             return $request->withHeader('Authorization', 'Bearer ' . $accessToken);
         }
 

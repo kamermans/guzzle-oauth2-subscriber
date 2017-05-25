@@ -6,7 +6,7 @@ use kamermans\OAuth2\Tests\BaseTestCase;
 use kamermans\OAuth2\Token\RawToken;
 use kamermans\OAuth2\Token\RawTokenFactory;
 
-abstract class TokenPersistenceTestBase extends \kamermans\OAuth2\Tests\BaseTestCase
+abstract class TokenPersistenceTestBase extends BaseTestCase
 {
     abstract public function getInstance();
 

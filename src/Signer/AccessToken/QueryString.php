@@ -16,7 +16,7 @@ class QueryString implements SignerInterface
     public function sign($request, $accessToken)
     {
         if (Helper::guzzleIs('~', 6)) {
-            $uri = Psr\Http\Message\UriInterface\Uri::withQueryValue(
+            $uri = \GuzzleHttp\Psr7\Uri::withQueryValue(
                     $request->getUri(),
                     $this->fieldName,
                     $accessToken

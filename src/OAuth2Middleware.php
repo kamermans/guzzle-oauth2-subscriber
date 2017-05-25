@@ -30,8 +30,8 @@ class OAuth2Middleware extends OAuth2Handler
             $request = $this->signRequest($request);
 
             return $handler($request, $options)->then(
-                $this->onFulfilled($request, $options),
-                $this->onRejected($request, $options)
+                $this->onFulfilled($request, $options, $handler),
+                $this->onRejected($request, $options, $handler)
             );
         };
     }
@@ -44,15 +44,18 @@ class OAuth2Middleware extends OAuth2Handler
       *
       * @param ErrorEvent $event Event received
       */
-    private function onFulfilled(RequestInterface $request, array $options)
+    private function onFulfilled(RequestInterface $request, array $options, $handler)
     {
-        return function ($response) use ($request, $options) {
+        return function ($response) use ($request, $options, $handler) {
             // Only deal with Unauthorized response.
             if ($response && $response->getStatusCode() != 401) {
                 return $response;
             }
 
             // If we already retried once, give up.
+            // This is extremely unlikely in Guzzle 6+ since we're using promises
+            // to check the response - looping should be impossible, but I'm leaving
+            // the code here in case something interferes with the Middleware
             if ($request->hasHeader('X-Guzzle-Retry')) {
                 return $response;
             }
@@ -66,11 +69,11 @@ class OAuth2Middleware extends OAuth2Handler
             $request = $request->withHeader('X-Guzzle-Retry', '1');
             $request = $this->signRequest($request);
 
-            return $this($request, $options);
+            return $handler($request, $options);
         };
     }
 
-    private function onRejected(RequestInterface $request, array $options)
+    private function onRejected(RequestInterface $request, array $options, $handler)
     {
         return function ($reason) use ($request, $options) {
             return \GuzzleHttp\Promise\rejection_for($reason);

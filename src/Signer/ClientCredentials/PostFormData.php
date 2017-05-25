@@ -18,7 +18,7 @@ class PostFormData implements SignerInterface
 
     public function sign($request, $clientId, $clientSecret)
     {
-        if (Helper::guzzleIs('~', 6)) {
+        if (Helper::guzzleIs('>=', 6)) {
             if ($request->getHeaderLine('Content-Type') != 'application/x-www-form-urlencoded') {
                 throw new \RuntimeException('Unable to set fields in request body');
             }
