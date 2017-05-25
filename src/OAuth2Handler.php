@@ -148,6 +148,15 @@ class OAuth2Handler
     }
 
     /**
+     * Forcefully delete an access token, even if it's valid
+     */
+    public function deleteAccessToken()
+    {
+        $this->rawToken = null;
+        $this->tokenPersistence->deleteToken();
+    }
+
+    /**
      * Get a valid access token.
      *
      * @return string|null A valid access token or null if unable to get one

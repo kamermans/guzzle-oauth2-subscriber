@@ -60,6 +60,9 @@ class OAuth2Middleware extends OAuth2Handler
                 return $response;
             }
 
+            // Delete the previous access token, if any
+            $this->deleteAccessToken();
+
             // Acquire a new access token, and retry the request.
             $accessToken = $this->getAccessToken();
             if ($accessToken === null) {

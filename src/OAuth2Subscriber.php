@@ -69,6 +69,9 @@ class OAuth2Subscriber extends OAuth2Handler implements SubscriberInterface
             return;
         }
 
+        // Delete the previous access token, if any
+        $this->deleteAccessToken();
+
         // Acquire a new access token, and retry the request.
         $accessToken = $this->getAccessToken();
         if ($accessToken != null) {
