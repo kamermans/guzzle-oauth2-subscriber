@@ -4,7 +4,7 @@
     <testsuites>
         <testsuite name="All Tests">
             <directory>../../tests</directory>
-            <exclude>../../tests/OAuth2SubscriberTest.php</exclude>
+            <exclude>../../tests/OAuth2MiddlewareTest.php</exclude>
         </testsuite>
     </testsuites>
     <filter>
