@@ -244,6 +244,11 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
         // Setup Reauthorization Client
         $reauth_responder = new MockHandler([
+            // This token is returned and used for the first request
+            new Psr7Response(200, [], json_encode([
+                'access_token' => $mock_access_token,
+            ])),
+            // The endpoint returned 401, so the previous token was deleted and this one is fetched:
             new Psr7Response(200, [], json_encode([
                 'access_token' => $mock_access_token,
             ])),
@@ -295,7 +300,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
         $response = $client->get('/');
 
-        $this->assertCount(1, $reauth_container);
+        $this->assertCount(2, $reauth_container);
         $this->assertCount(2, $container);
 
         // This proves that the access_token received from the reauth_client was used to authenticate this response
@@ -548,7 +553,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
             // We let the ServerException (the Error 500) bubble up to PHPUnit
         }
 
-        $this->assertCount(1, $reauth_container);
+        $this->assertCount(2, $reauth_container);
         $this->assertCount(2, $container);
 
         // This proves that the access_token received from the reauth_client was used to authenticate this response
