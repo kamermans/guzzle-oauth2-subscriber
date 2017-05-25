@@ -20,7 +20,7 @@ see that they have dropped support for Guzzle < v6 on `master`, which prompted m
 
 ## Installation
 
-This project can be installed using Composer. Run `composer require kamermans/guzzle-oauth-subscriber` or add the following to your `composer.json`:
+This project can be installed using Composer. Run `composer require kamermans/guzzle-oauth2-subscriber` or add the following to your `composer.json`:
 
 ```javascript
     {
@@ -62,7 +62,7 @@ $stack = HandlerStack::create();
 $stack->push($oauth);
 
 $client = new Client([
-	'auth'     => 'oauth',
+    'auth'     => 'oauth',
     'handler'  => $stack,
 ]);
 ```
@@ -82,10 +82,10 @@ $reauth_client = new GuzzleHttp\Client([
     'base_url' => 'http://some_host/access_token_request_url',
 ]);
 $reauth_config = [
-	"client_id" => "your client id",
-	"client_secret" => "your client secret",
-	"scope" => "your scope(s)", // optional
-	"state" => time(), // optional
+    "client_id" => "your client id",
+    "client_secret" => "your client secret",
+    "scope" => "your scope(s)", // optional
+    "state" => time(), // optional
 ];
 $grant_type = new ClientCredentials($reauth_client, $reauth_config);
 $oauth = new OAuth2Subscriber($grant_type);
@@ -112,10 +112,10 @@ $reauth_client = new GuzzleHttp\Client([
     'base_uri' => 'http://some_host/access_token_request_url',
 ]);
 $reauth_config = [
-	"client_id" => "your client id",
-	"client_secret" => "your client secret",
-	"scope" => "your scope(s)", // optional
-	"state" => time(), // optional
+    "client_id" => "your client id",
+    "client_secret" => "your client secret",
+    "scope" => "your scope(s)", // optional
+    "state" => time(), // optional
 ];
 $grant_type = new ClientCredentials($reauth_client, $reauth_config);
 $oauth = new OAuth2Middleware($grant_type);
@@ -153,4 +153,3 @@ By default, access tokens are not persisted anywhere.  There are some built-in m
   - `DoctrineCacheTokenPersistence` Takes a `Doctrine\Common\Cache\Cache` object and optionally a key name (default: `guzzle-oauth2-token`) where the access token will be saved.
 
 If you want to use your own persistence layer, you should write your own class that implements `TokenPersistenceInterface`.
-
