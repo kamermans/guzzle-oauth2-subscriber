@@ -8,18 +8,13 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response as Psr7Response;
-use GuzzleHttp\Psr7\Request as Psr7Request;
-use GuzzleHttp\Subscriber\Mock as MockResponder;
 use GuzzleHttp\Subscriber\History;
 
 use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\OAuth2Middleware;
-use kamermans\OAuth2\Token\RawToken;
-use kamermans\OAuth2\Tests\BaseTestCase;
 
 class OAuth2MiddlewareTest extends BaseTestCase
 {
-
     public function setUp()
     {
         if (Helper::guzzleIs('<', 6)) {
@@ -39,7 +34,6 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
     public function testDoesNotTriggerForNonOAuthRequests()
     {
-
         $reauth_container = [];
         $reauth_history = Middleware::history($reauth_container);
 
@@ -97,14 +91,13 @@ class OAuth2MiddlewareTest extends BaseTestCase
         $this->assertCount(1, $container);
 
         $this->assertSame('', $this->getHeader($container[0]['request'], 'Authorization'), "The request should not have been signed");
-
     }
 
     public function testTriggersSignerAndGrantDataProcessor()
     {
 
         // A random access token helps avoid false pasitives due to caching
-        $mock_access_token = md5(microtime(true).mt_rand(100000,999999));
+        $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
 
         $reauth_container = [];
         $reauth_history = Middleware::history($reauth_container);
@@ -167,7 +160,6 @@ class OAuth2MiddlewareTest extends BaseTestCase
         // This proves that the access_token received from the reauth_client was used to authenticate this response
         $expected_auth_value = "Bearer $mock_access_token";
         $this->assertSame($expected_auth_value, $this->getHeader($container[0]['request'], 'Authorization'));
-
     }
 
     /**
@@ -177,7 +169,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
     {
 
         // A random access token helps avoid false pasitives due to caching
-        $mock_access_token = md5(microtime(true).mt_rand(100000,999999));
+        $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
 
         $reauth_container = [];
         $reauth_history = Middleware::history($reauth_container);
@@ -239,14 +231,13 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
         $this->assertCount(0, $reauth_container);
         $this->assertCount(1, $container);
-
     }
 
     public function testOnErrorDoesTriggerForOAuthRequests()
     {
 
         // A random access token helps avoid false pasitives due to caching
-        $mock_access_token = md5(microtime(true).mt_rand(100000,999999));
+        $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
 
         $reauth_container = [];
         $reauth_history = Middleware::history($reauth_container);
@@ -314,14 +305,13 @@ class OAuth2MiddlewareTest extends BaseTestCase
         // Note that if we didn't catch the HTTP 401, it would have thrown an exception
         $this->assertSame(401, $container[0]['response']->getStatusCode());
         $this->assertSame(200, $container[1]['response']->getStatusCode());
-
     }
 
     public function testOnErrorDoesNotTriggerForNon401Requests()
     {
 
         // A random access token helps avoid false pasitives due to caching
-        $mock_access_token = md5(microtime(true).mt_rand(100000,999999));
+        $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
 
         $reauth_container = [];
         $reauth_history = Middleware::history($reauth_container);
@@ -404,8 +394,8 @@ class OAuth2MiddlewareTest extends BaseTestCase
     {
 
         // A random access token helps avoid false pasitives due to caching
-        $mock_access_token_cached = md5(microtime(true).mt_rand(100000,999999));
-        $mock_access_token = md5(microtime(true).mt_rand(100000,999999));
+        $mock_access_token_cached = md5(microtime(true).mt_rand(100000, 999999));
+        $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
 
         $cached_token = new \kamermans\OAuth2\Token\RawToken($mock_access_token_cached);
 
@@ -478,13 +468,12 @@ class OAuth2MiddlewareTest extends BaseTestCase
         // This proves that the access_token received from the Persistence was used to authenticate this response, not the one from reauth
         $expected_auth_value = "Bearer $mock_access_token_cached";
         $this->assertSame($expected_auth_value, $this->getHeader($container[0]['request'], 'Authorization'));
-
     }
 
     public function testOnErrorDoesNotLoop()
     {
         // A random access token helps avoid false pasitives due to caching
-        $mock_access_token = md5(microtime(true).mt_rand(100000,999999));
+        $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
 
         $reauth_container = [];
         $reauth_history = Middleware::history($reauth_container);
@@ -597,5 +586,4 @@ class OAuth2MiddlewareTest extends BaseTestCase
         // Force an onError event, which triggers the signer and grant data processor
         $sub->onError($event);
     }
-
 }

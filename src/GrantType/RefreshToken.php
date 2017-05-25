@@ -73,32 +73,32 @@ class RefreshToken implements GrantTypeInterface
     */
     protected function getPostBody($refreshToken)
     {
-       if (Helper::guzzleIs('>=', '6')) {
-           $data = [
+        if (Helper::guzzleIs('>=', '6')) {
+            $data = [
                 'grant_type' => 'refresh_token',
                 // If no refresh token was provided to the method, use the one
                 // provided to the constructor.
                 'refresh_token' => $refreshToken ?: $this->config['refresh_token'],
            ];
 
-           if ($this->config['scope']) {
-               $data['scope'] = $this->config['scope'];
-           }
+            if ($this->config['scope']) {
+                $data['scope'] = $this->config['scope'];
+            }
 
-           return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
-       }
+            return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
+        }
 
-       $postBody = new PostBody();
-       $postBody->replaceFields([
+        $postBody = new PostBody();
+        $postBody->replaceFields([
             'grant_type' => 'refresh_token',
             // If no refresh token was provided to the method, use the one
             // provided to the constructor.
             'refresh_token' => $refreshToken ?: $this->config['refresh_token'],
        ]);
 
-       if ($this->config['scope']) {
+        if ($this->config['scope']) {
             $postBody->setField('scope', $this->config['scope']);
-       }
+        }
 
         return $postBody;
     }

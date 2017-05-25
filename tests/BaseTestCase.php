@@ -9,7 +9,6 @@ use GuzzleHttp\Psr7\Request as Psr7Request;
 
 class BaseTestCase extends \PHPUnit_Framework_TestCase
 {
-
     protected function createRequest($method, $uri, $options=[])
     {
         return Helper::guzzleIs('>=', 6)?
@@ -35,7 +34,6 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         $values = $this->parseQueryString($query_string);
 
         return array_key_exists($field, $values)? $values[$field]: null;
-
     }
 
     protected function getFormPostBodyValue($request, $field)
@@ -49,7 +47,6 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         $values = $this->parseQueryString($query_string);
 
         return array_key_exists($field, $values)? $values[$field]: null;
-
     }
 
     protected function parseQueryString($query_string)
@@ -73,5 +70,4 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         return $request;
     }
-
 }

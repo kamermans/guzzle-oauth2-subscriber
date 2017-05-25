@@ -10,12 +10,9 @@ use GuzzleHttp\Message\Request;
 use GuzzleHttp\Message\Response;
 use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\OAuth2Subscriber;
-use kamermans\OAuth2\Token\RawToken;
-use kamermans\OAuth2\Tests\BaseTestCase;
 
 class OAuth2SubscriberTest extends BaseTestCase
 {
-
     public function setUp()
     {
         if (Helper::guzzleIs('>=', 6)) {

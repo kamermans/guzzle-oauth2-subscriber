@@ -2,20 +2,11 @@
 
 namespace kamermans\OAuth2\Tests;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Event\BeforeEvent;
-use GuzzleHttp\Event\ErrorEvent;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Message\Request;
-use GuzzleHttp\Message\Response;
-use kamermans\OAuth2\Utils\Helper;
 use kamermans\OAuth2\OAuth2Handler;
 use kamermans\OAuth2\Token\RawToken;
-use kamermans\OAuth2\Tests\BaseTestCase;
 
 class OAuth2HandlerTest extends BaseTestCase
 {
-
     public function testConstruct()
     {
         $grant = $this->getMockBuilder('\kamermans\OAuth2\GrantType\ClientCredentials')
@@ -154,5 +145,4 @@ class OAuth2HandlerTest extends BaseTestCase
         $sub->setAccessToken($tokenData);
         $sub->getAccessToken();
     }
-
 }
