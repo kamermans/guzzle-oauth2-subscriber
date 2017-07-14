@@ -58,7 +58,7 @@ class PasswordCredentials implements GrantTypeInterface
             $request->setBody($this->getPostBody());
         }
 
-        $clientCredentialsSigner->sign(
+        $request = $clientCredentialsSigner->sign(
             $request,
             $this->config['client_id'],
             $this->config['client_secret']
