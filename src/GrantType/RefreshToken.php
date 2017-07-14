@@ -57,7 +57,7 @@ class RefreshToken implements GrantTypeInterface
             $request->setBody($this->getPostBody($refreshToken));
         }
 
-        $clientCredentialsSigner->sign(
+        $request = $clientCredentialsSigner->sign(
             $request,
             $this->config['client_id'],
             $this->config['client_secret']
