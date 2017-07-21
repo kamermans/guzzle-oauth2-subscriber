@@ -116,7 +116,8 @@ class PasswordCredentialsTest extends BaseTestCase
 
         $signer->expects($this->once())
             ->method('sign')
-            ->with($this->anything(), 'foo', 'bar');
+            ->with($this->anything(), 'foo', 'bar')
+            ->will($this->returnArgument(0));
 
         $data = $grant->getRawData($signer);
         $request_body = $history->getLastRequest()->getBody();
