@@ -219,7 +219,7 @@ class OAuth2Handler
         if ($this->refreshTokenGrantType && $this->rawToken && $this->rawToken->getRefreshToken()) {
             try {
                 // Get an access token using the stored refresh token.
-                $rawData = $this->refreshTokenGrantType->getTokenData(
+                $rawData = $this->refreshTokenGrantType->getRawData(
                     $this->clientCredentialsSigner,
                     $this->rawToken->getRefreshToken()
                 );
