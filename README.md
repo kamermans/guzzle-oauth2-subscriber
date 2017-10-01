@@ -53,7 +53,7 @@ $client->getEmitter()->attach($oauth);
 ```
 
 #### Middleware (Guzzle 6+)
-Starting with Guzzle 6, **Middleware** is used to integrate OAuth, and this library includes `OAuthMiddleware` for that purpose:
+Starting with Guzzle 6, **Middleware** is used to integrate OAuth, and this library includes `OAuth2Middleware` for that purpose:
 
 ```php
 $oauth = new OAuth2Middleware($grant_type);
@@ -104,7 +104,7 @@ Here's the same example for Guzzle 6+:
 
 ```php
 use kamermans\OAuth2\GrantType\ClientCredentials;
-use kamermans\OAuth2\OAuthMiddleware;
+use kamermans\OAuth2\OAuth2Middleware;
 
 // Authorization client - this is used to request OAuth access tokens
 $reauth_client = new GuzzleHttp\Client([
