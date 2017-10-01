@@ -67,6 +67,14 @@ $client = new Client([
 ]);
 ```
 
+Alternatively, you can add the middleware to an existing Guzzle Client:
+
+```php
+$oauth = new OAuth2Middleware($grant_type);
+$client->getConfig('handler')->push($oauth);
+```
+
+
 ### Client Credentials Example
 Client credentials are normally used in server-to-server authentication.  With this grant type, a client is requesting authorization in its own behalf, so there are only two parties involved.  At a minimum, a `client_id` and `client_secret` are required, although many services require a `scope` and other parameters.
 
@@ -105,6 +113,7 @@ Here's the same example for Guzzle 6+:
 ```php
 use kamermans\OAuth2\GrantType\ClientCredentials;
 use kamermans\OAuth2\OAuth2Middleware;
+use GuzzleHttp\HandlerStack;
 
 // Authorization client - this is used to request OAuth access tokens
 $reauth_client = new GuzzleHttp\Client([
