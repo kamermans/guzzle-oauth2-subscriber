@@ -32,7 +32,7 @@ class DoctrineCacheTokenPersistence implements TokenPersistenceInterface
     {
         $data = $this->cache->fetch($this->cacheKey);
 
-        if (false === $data) {
+        if (!is_array($data)) {
             return null;
         }
 
