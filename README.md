@@ -163,3 +163,35 @@ By default, access tokens are not persisted anywhere.  There are some built-in m
   - `SimpleCacheTokenPersistence` Takes a PSR-16 SimpleCache and optionally a key name (default: `guzzle-oauth2-token`) where the access token will be saved. This allows any PSR-16 compatible cache to be used.
 
 If you want to use your own persistence layer, you should write your own class that implements `TokenPersistenceInterface`.
+
+To enable token persistence, you must use the `OAuth2Middleware::setTokenPersistence()` or `OAuth2Subscriber::setTokenPersistence()` method, like this:
+
+```php
+use kamermans\OAuth2\Persistence\FileTokenPersistence;
+
+$token_path = '/tmp/access_token.json';
+$token_persistence = new FileTokenPersistence($token_path);
+
+$grant_type = new ClientCredentials($reauth_client, $reauth_config);
+$oauth = new OAuth2Middleware($grant_type);
+$oauth->setTokenPersistence($token_persistence);
+```
+
+Please see the `src/Persistence/` directory for more information on persistence.
+
+### Manually Setting an Access Token
+For a manually-obtained access token, you can use the `NullGrantType` and set the access token manually as follows:
+
+```php
+use kamermans\OAuth2\GrantType\NullGrantType;
+
+$oauth = new OAuth2Middleware(new NullGrantType);	
+$oauth->setAccessToken([
+	// Your access token goes here
+    'access_token' => 'abcdefghijklmnop',
+	// You can specify 'expires_in` as well, but it doesn't make much sense in this scenario
+	// You can also specify 'scope' => 'list of scopes'
+]);
+```
+
+Note that if the access token is not set using `setAccessToken()`, a `kamermans\OAuth2\Exception\ReauthorizationException` will be thrown since the `NullGrantType` has no way to get a new access token.
