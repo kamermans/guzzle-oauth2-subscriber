@@ -8,6 +8,7 @@ php:
     - 5.6
     - 7.0
     - 7.1
+    - 7.2
     - hhvm
 
 install:
@@ -33,4 +34,8 @@ matrix:
         - php: 7.1
           env: GUZZLE_VERSION=4
         - php: 7.1
+          env: GUZZLE_VERSION=5
+        - php: 7.2
+          env: GUZZLE_VERSION=4
+        - php: 7.2
           env: GUZZLE_VERSION=5

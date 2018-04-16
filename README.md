@@ -1,7 +1,7 @@
 # Guzzle OAuth 2.0 Subscriber
 
 > [![Build Status](https://travis-ci.org/kamermans/guzzle-oauth2-subscriber.svg?branch=master)](https://travis-ci.org/kamermans/guzzle-oauth2-subscriber)
-> Tested with Guzzle 4, 5, 6 and PHP 5.4, 5.5, 5.6, 7.0, 7.1 and HHVM
+> Tested with Guzzle 4, 5, 6 and PHP 5.4, 5.5, 5.6, 7.0, 7.1, 7.2 and HHVM
 
 This is an OAuth 2.0 client for Guzzle which aims to be 100% compatible with Guzzle 4, 5, 6 and all future versions within a single package.
 Although I love Guzzle, its interfaces keep changing, causing massive breaking changes every 12 months or so, so I have created this package
@@ -185,7 +185,7 @@ For a manually-obtained access token, you can use the `NullGrantType` and set th
 ```php
 use kamermans\OAuth2\GrantType\NullGrantType;
 
-$oauth = new OAuth2Middleware(new NullGrantType);	
+$oauth = new OAuth2Middleware(new NullGrantType);
 $oauth->setAccessToken([
 	// Your access token goes here
     'access_token' => 'abcdefghijklmnop',
@@ -202,7 +202,7 @@ Refresh tokens are designed to allow a server to request a new access token on b
 To use refresh tokens, you pass a `RefreshToken` grant type object as the second argument to `OAuth2Middleware` or `OAuth2Subscriber`.  Normally refresh tokens are only used in the interactive `AuthorizationCode` grant type (where the user is present), but it is also possible to use them with the other grant types (this is discouraged in the OAuth 2.0 spec).  For example, here we are using a refresh token with the `ClientCredentials` grant type:
 
 ```php
-// This grant type is used to get a new Access Token and Refresh Token when 
+// This grant type is used to get a new Access Token and Refresh Token when
 //  no valid Access Token or Refresh Token is available
 $grant_type = new ClientCredentials($reauth_client, $reauth_config);
 
