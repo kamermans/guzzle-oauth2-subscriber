@@ -183,7 +183,17 @@ class OAuth2Handler
             }
         }
 
-        return $this->rawToken ? $this->rawToken->getAccessToken() : null;
+        return $this->rawToken? $this->rawToken->getAccessToken(): null;
+    }
+
+    /**
+     * Gets the current Token object
+     *
+     * @return Token\RawToken|null
+     */
+    public function getRawToken()
+    {
+        return $this->rawToken;
     }
 
     protected function signRequest($request)
