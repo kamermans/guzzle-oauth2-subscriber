@@ -47,4 +47,9 @@ class SimpleCacheTokenPersistence implements TokenPersistenceInterface
     {
         $this->cache->delete($this->cacheKey);
     }
+
+    public function hasToken()
+    {
+        return $this->cache->has($this->cacheKey);;
+    }
 }

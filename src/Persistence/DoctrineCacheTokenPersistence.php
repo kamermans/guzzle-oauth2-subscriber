@@ -43,4 +43,9 @@ class DoctrineCacheTokenPersistence implements TokenPersistenceInterface
     {
         $this->cache->delete($this->cacheKey);
     }
+
+    public function hasToken()
+    {
+        return $this->cache->contains($this->cacheKey);
+    }
 }

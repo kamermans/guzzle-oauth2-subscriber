@@ -26,4 +26,11 @@ interface TokenPersistenceInterface
      * Delete the saved token data.
      */
     public function deleteToken();
+
+    /**
+     * Returns true if a token exists (although it may not be valid)
+     *
+     * @return bool
+     */
+    public function hasToken();
 }

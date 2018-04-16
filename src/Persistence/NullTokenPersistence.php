@@ -20,4 +20,9 @@ class NullTokenPersistence implements TokenPersistenceInterface
     {
         return;
     }
+
+    public function hasToken()
+    {
+        return false;
+    }
 }

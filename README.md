@@ -195,3 +195,23 @@ $oauth->setAccessToken([
 ```
 
 Note that if the access token is not set using `setAccessToken()`, a `kamermans\OAuth2\Exception\ReauthorizationException` will be thrown since the `NullGrantType` has no way to get a new access token.
+
+### Using Refresh Tokens
+Refresh tokens are designed to allow a server to request a new access token on behalf of a user that is not present.  For example, if some fictional app `Angry Rodents` wants to post something to the social media site `Grillbook` on behalf of the user, `John Doe`, the `Angry Rodents` app needs an access token for `Grillbook`.  When `John Doe` first installs this app, it redirects him to the `Grillbook` site to authorize the `Angry Rodents` app to post on his behalf, and the `Angry Rodents` app receives an access token and a refresh token in the process.  Eventually the access token expires, but `Angry Rodents` cannot use the original method (redirecting the user to ask for permission) every time the token expires, so instead, it sends the refresh token to `Grillbook`, which returns a new access token (and possibly a new refresh token).
+
+To use refresh tokens, you pass a `RefreshToken` grant type object as the second argument to `OAuth2Middleware` or `OAuth2Subscriber`.  Normally refresh tokens are only used in the interactive `AuthorizationCode` grant type (where the user is present), but it is also possible to use them with the other grant types (this is discouraged in the OAuth 2.0 spec).  For example, here we are using a refresh token with the `ClientCredentials` grant type:
+
+```php
+// This grant type is used to get a new Access Token and Refresh Token when 
+//  no valid Access Token or Refresh Token is available
+$grant_type = new ClientCredentials($reauth_client, $reauth_config);
+
+// This grant type is used to get a new Access Token and Refresh Token when
+//  only a valid Refresh Token is available
+$refresh_grant_type = new RefreshToken($reauth_client, $reauth_config);
+
+// Tell the middleware to use the two grant types
+$oauth = new OAuth2Middleware($grant_type, $refresh_grant_type);
+```
+
+> When using a refresh token to request a new access token, the server *may* send a new refresh token in the response.  If a new refresh token was sent, it will be saved, otherwise the old refresh token will be retained.

@@ -4,4 +4,4 @@ vendor/
 guzzle_environments/*/vendor/
 guzzle_environments/*/composer.lock
 composer.lock
-examples/
+internal_examples/

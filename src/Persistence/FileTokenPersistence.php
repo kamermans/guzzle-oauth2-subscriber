@@ -42,4 +42,9 @@ class FileTokenPersistence implements TokenPersistenceInterface
             @unlink($this->filepath);
         }
     }
+
+    public function hasToken()
+    {
+        return file_exists($this->filepath);
+    }
 }
