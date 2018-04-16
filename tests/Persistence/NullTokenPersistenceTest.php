@@ -18,6 +18,11 @@ class NullTokenPersistenceTest extends TokenPersistenceTestBase
         $this->assertNull($this->getInstance()->restoreToken(new RawToken));
     }
 
+    public function testHasToken()
+    {
+        $this->assertFalse($this->getInstance()->hasToken());
+    }
+
     public function testDeleteToken()
     {
         $this->testSaveToken();

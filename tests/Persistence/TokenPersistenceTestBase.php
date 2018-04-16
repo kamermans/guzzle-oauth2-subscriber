@@ -40,6 +40,20 @@ abstract class TokenPersistenceTestBase extends BaseTestCase
         $this->assertEquals($token_before, $token_after);
     }
 
+    public function testHasToken()
+    {
+        $factory = new RawTokenFactory();
+        $token = $factory([
+            'access_token' => 'abcdefghijklmnop',
+            'refresh_token' => '0123456789abcdef',
+            'expires_in' => 3600,
+        ]);
+
+        $this->assertFalse($this->getInstance()->hasToken());
+        $this->getInstance()->saveToken($token);
+        $this->assertTrue($this->getInstance()->hasToken());
+    }
+
     public function testDeleteToken()
     {
         $factory = new RawTokenFactory();
@@ -60,5 +74,6 @@ abstract class TokenPersistenceTestBase extends BaseTestCase
 
         $restoredToken = $persist->restoreToken(new RawToken);
         $this->assertNull($restoredToken);
+        $this->assertFalse($persist->hasToken());
     }
 }
