@@ -32,7 +32,8 @@ class PasswordCredentials implements GrantTypeInterface
     public function __construct(ClientInterface $client, array $config)
     {
         $this->client = $client;
-        $this->config = Collection::fromConfig($config,
+        $this->config = Collection::fromConfig(
+            $config,
             // Default
             [
                 'client_secret' => '',
@@ -69,9 +70,9 @@ class PasswordCredentials implements GrantTypeInterface
         return json_decode($response->getBody(), true);
     }
 
-     /**
-     * @return PostBody
-     */
+    /**
+    * @return PostBody
+    */
     protected function getPostBody()
     {
         if (Helper::guzzleIs('>=', '6')) {

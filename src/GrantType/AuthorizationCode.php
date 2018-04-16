@@ -32,7 +32,8 @@ class AuthorizationCode implements GrantTypeInterface
     public function __construct(ClientInterface $client, array $config)
     {
         $this->client = $client;
-        $this->config = Collection::fromConfig($config,
+        $this->config = Collection::fromConfig(
+            $config,
             // Defaults
             [
                 'client_secret' => '',

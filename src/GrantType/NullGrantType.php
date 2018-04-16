@@ -2,10 +2,6 @@
 
 namespace kamermans\OAuth2\GrantType;
 
-use GuzzleHttp\Post\PostBody;
-use GuzzleHttp\ClientInterface;
-use kamermans\OAuth2\Utils\Helper;
-use kamermans\OAuth2\Utils\Collection;
 use kamermans\OAuth2\Signer\ClientCredentials\SignerInterface;
 use kamermans\OAuth2\Exception\ReauthorizationException;
 

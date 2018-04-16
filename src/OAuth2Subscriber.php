@@ -22,13 +22,13 @@ class OAuth2Subscriber extends OAuth2Handler implements SubscriberInterface
         ];
     }
 
-   /**
-     * Request before-send event handler.
-     *
-     * Adds the Authorization header if an access token was found.
-     *
-     * @param BeforeEvent $event Event received
-     */
+    /**
+      * Request before-send event handler.
+      *
+      * Adds the Authorization header if an access token was found.
+      *
+      * @param BeforeEvent $event Event received
+      */
     public function onBefore(BeforeEvent $event)
     {
         $request = $event->getRequest();

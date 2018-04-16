@@ -79,7 +79,8 @@ class Collection implements
         if ($missing = array_diff($required, array_keys($data))) {
             throw new \InvalidArgumentException(
                 'Config is missing the following keys: ' .
-                implode(', ', $missing));
+                implode(', ', $missing)
+            );
         }
 
         return new self($data);
