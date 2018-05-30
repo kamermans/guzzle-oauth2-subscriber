@@ -188,7 +188,8 @@ class MyCustomAuth implements SignerInterface
 When making a request to a REST endpoint protected by OAuth 2, we need to *sign* the request by adding the access token to it.  This library intercepts your requests, signs them with the current access token, and sends them on their way.
 
 The two most common ways to sign a request are included in `kamermans\OAuth2\Signer\AccessToken`:
- - `BasicAuth`: (default) Sends the access token using the HTTP `Authorization` header.  Although the class name is `BasicAuth`, this is technically an HTTP `Bearer` token.
+ - `BearerAuth`: (default) Sends the access token using the HTTP `Authorization` header.
+ - `BasicAuth`: Alias for `BearerAuth`. Don't use; exists for backwards compatibility only.
  - `QueryString`: Sends the access token by appending it to the query string.  The default query string field name is `access_token`, and if that field is already present in the request, it will be overwritten.  A different field name can be used by passing it to the constructor like this: `new QueryString('MyAccessToken')`, where `MyAccessToken` is the field name.
 
 > Note: Use of the `QueryString` signer is discouraged because your access token is exposed in the URL.  Also, you should only connect to OAuth-powered services via `HTTPS` so your access token is encrypted in flight.

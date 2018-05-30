@@ -76,7 +76,7 @@ class OAuth2Handler
         }
 
         if ($this->accessTokenSigner === null) {
-            $this->accessTokenSigner = new Signer\AccessToken\BasicAuth();
+            $this->accessTokenSigner = new Signer\AccessToken\BearerAuth();
         }
 
         $this->tokenPersistence = new Persistence\NullTokenPersistence();

@@ -33,7 +33,7 @@ class OAuth2SubscriberTest extends BaseTestCase
     public function testOnBeforeDoesNotTriggerForNonOAuthRequests()
     {
         // Setup Access Token Signer
-        $signer = $this->getMockBuilder('\kamermans\OAuth2\Signer\AccessToken\BasicAuth')
+        $signer = $this->getMockBuilder('\kamermans\OAuth2\Signer\AccessToken\BearerAuth')
             ->setMethods(['sign'])
             ->getMock();
 
@@ -61,7 +61,7 @@ class OAuth2SubscriberTest extends BaseTestCase
     public function testOnBeforeTriggersSignerAndGrantDataProcessor()
     {
         // Setup Access Token Signer
-        $signer = $this->getMockBuilder('\kamermans\OAuth2\Signer\AccessToken\BasicAuth')
+        $signer = $this->getMockBuilder('\kamermans\OAuth2\Signer\AccessToken\BearerAuth')
             ->setMethods(['sign'])
             ->getMock();
 
@@ -181,7 +181,7 @@ class OAuth2SubscriberTest extends BaseTestCase
     public function testOnErrorTriggersSignerAndGrantDataProcessor()
     {
         // Setup Access Token Signer
-        $signer = $this->getMockBuilder('\kamermans\OAuth2\Signer\AccessToken\BasicAuth')
+        $signer = $this->getMockBuilder('\kamermans\OAuth2\Signer\AccessToken\BearerAuth')
             ->setMethods(['sign'])
             ->getMock();
 

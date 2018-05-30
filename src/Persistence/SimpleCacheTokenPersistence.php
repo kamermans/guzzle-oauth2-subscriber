@@ -50,6 +50,7 @@ class SimpleCacheTokenPersistence implements TokenPersistenceInterface
 
     public function hasToken()
     {
-        return $this->cache->has($this->cacheKey);;
+        return $this->cache->has($this->cacheKey);
+        ;
     }
 }

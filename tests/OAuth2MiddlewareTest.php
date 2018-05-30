@@ -70,7 +70,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
             'scope' => 'foo,bar',
         ]);
 
-        $signer = new \kamermans\OAuth2\Signer\AccessToken\BasicAuth();
+        $signer = new \kamermans\OAuth2\Signer\AccessToken\BearerAuth();
 
         // Setup OAuth2Middleware
         $sub = new OAuth2Middleware($grant);
@@ -137,7 +137,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
             'scope' => 'foo,bar',
         ]);
 
-        $signer = new \kamermans\OAuth2\Signer\AccessToken\BasicAuth();
+        $signer = new \kamermans\OAuth2\Signer\AccessToken\BearerAuth();
 
         // Setup OAuth2Middleware
         $sub = new OAuth2Middleware($grant);
@@ -212,7 +212,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
             'scope' => 'foo,bar',
         ]);
 
-        $signer = new \kamermans\OAuth2\Signer\AccessToken\BasicAuth();
+        $signer = new \kamermans\OAuth2\Signer\AccessToken\BearerAuth();
 
         // Setup OAuth2Middleware
         $sub = new OAuth2Middleware($grant);
@@ -283,7 +283,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
             'scope' => 'foo,bar',
         ]);
 
-        $signer = new \kamermans\OAuth2\Signer\AccessToken\BasicAuth();
+        $signer = new \kamermans\OAuth2\Signer\AccessToken\BearerAuth();
 
         // Setup OAuth2Middleware
         $sub = new OAuth2Middleware($grant);
@@ -359,7 +359,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
             'scope' => 'foo,bar',
         ]);
 
-        $signer = new \kamermans\OAuth2\Signer\AccessToken\BasicAuth();
+        $signer = new \kamermans\OAuth2\Signer\AccessToken\BearerAuth();
 
         // Setup OAuth2Middleware
         $sub = new OAuth2Middleware($grant);
@@ -442,7 +442,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
             'scope' => 'foo,bar',
         ]);
 
-        $signer = new \kamermans\OAuth2\Signer\AccessToken\BasicAuth();
+        $signer = new \kamermans\OAuth2\Signer\AccessToken\BearerAuth();
 
         $mock_persistence = $this->getMock('\kamermans\OAuth2\Persistence\TokenPersistenceInterface');
 
@@ -532,7 +532,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
             'scope' => 'foo,bar',
         ]);
 
-        $signer = new \kamermans\OAuth2\Signer\AccessToken\BasicAuth();
+        $signer = new \kamermans\OAuth2\Signer\AccessToken\BearerAuth();
 
         // Setup OAuth2Middleware
         $sub = new OAuth2Middleware($grant);
