@@ -40,7 +40,7 @@ There are multiple grant types available like `PasswordCredentials`, `ClientCred
 With the Guzzle 6 release, most of the library was refactored or completely rewritten, and as such, the integration of this library is different.
 
 #### Emitters (Guzzle 4 & 5)
-Guzzle 4 & 5 use **Event Subscribers**, and this library incudes `OAuth2Subscriber` for that purpose:
+Guzzle 4 & 5 use **Event Subscribers**, and this library includes `OAuth2Subscriber` for that purpose:
 
 ```php
 $oauth = new OAuth2Subscriber($grant_type);
@@ -152,6 +152,48 @@ The following OAuth grant types are supported directly, and you can always creat
 
 Each of these takes a Guzzle client as the first argument.  This client is used to obtain or refresh your OAuth access token, out of band from the other requests you are making.
 
+### Request Signers
+There are two cases where we need to *sign* an HTTP request: when adding client credentials to a request for a new access token, and when adding an access token to a request.
+
+#### Client Credentials Signers
+When requesting a new access token, we need to send the required credentials to the OAuth 2 server.  Adding information to a request is called *signing* in this library.
+
+There are two client credentials signers included in `kamermans\OAuth2\Signer\ClientCredentials`:
+ - `BasicAuth`: (default) Sends the credentials to the OAuth 2 server using HTTP Basic Auth in the `Authorization` header.
+ - `PostFormData`: Sends the credentials to the OAuth 2 server using an HTTP Form Body (`Content-Type: application/x-www-form-urlencoded`).  The Client ID is stored in the field `client_id` and the Client Secret is stored in `client_secret`.  The field names can be changed by passing arguments to the constructor like this: `new PostFormData('MyClientId', 'MySecret');` (which would place the ID and secret into the fields `MyClientId` and `MySecret`).
+
+If the OAuth 2 server you are obtaining an access token from does not support the built-in methods, you can either extend one of the built-in signers, or create your own by implementing `kamermans\OAuth2\Signer\ClientCredentials\SignerInterface`, for example:
+
+```php
+use kamermans\OAuth2\Signer\ClientCredentials\SignerInterface;
+
+class MyCustomAuth implements SignerInterface
+{
+    public function sign($request, $clientId, $clientSecret)
+    {
+        if (Helper::guzzleIs('~', 6)) {
+            $request = $request->withHeader('x-client-id', $clientId);
+            $request = $request->withHeader('x-client-secret', $clientSecret);
+            return $request;
+        }
+
+        $request->setHeader('x-client-id', $clientId);
+        $request->setHeader('x-client-secret', $clientSecret);
+        return $request;
+    }
+}
+```
+
+#### Access Token Signers
+When making a request to a REST endpoint protected by OAuth 2, we need to *sign* the request by adding the access token to it.  This library intercepts your requests, signs them with the current access token, and sends them on their way.
+
+The two most common ways to sign a request are included in `kamermans\OAuth2\Signer\AccessToken`:
+ - `BasicAuth`: (default) Sends the access token using the HTTP `Authorization` header.  Although the class name is `BasicAuth`, this is technically an HTTP `Bearer` token.
+ - `QueryString`: Sends the access token by appending it to the query string.  The default query string field name is `access_token`, and if that field is already present in the request, it will be overwritten.  A different field name can be used by passing it to the constructor like this: `new QueryString('MyAccessToken')`, where `MyAccessToken` is the field name.
+
+> Note: Use of the `QueryString` signer is discouraged because your access token is exposed in the URL.  Also, you should only connect to OAuth-powered services via `HTTPS` so your access token is encrypted in flight.
+
+You can create a custom access token signer by implementing `kamermans\OAuth2\Signer\AccessToken\SignerInterface`.
 
 ### Access Token Persistence
 > Note: OAuth Access tokens should be stored somewhere securely and/or encrypted.  If an attacker gains access to your access token, they could have unrestricted access to whatever resources and scopes were allowed!
