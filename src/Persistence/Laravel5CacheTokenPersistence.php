@@ -41,7 +41,7 @@ class Laravel5CacheTokenPersistence implements TokenPersistenceInterface
 
     public function deleteToken()
     {
-        $this->cache->delete($this->cacheKey);
+        $this->cache->forget($this->cacheKey);
     }
 
     public function hasToken()
