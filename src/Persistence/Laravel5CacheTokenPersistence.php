@@ -5,7 +5,7 @@ namespace kamermans\OAuth2\Persistence;
 use Illuminate\Contracts\Cache\Repository;
 use kamermans\OAuth2\Token\TokenInterface;
 
-class LaravelCacheTokenPersistence implements TokenPersistenceInterface
+class Laravel5CacheTokenPersistence implements TokenPersistenceInterface
 {
     /**
      * @var Repository

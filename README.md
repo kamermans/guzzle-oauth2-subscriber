@@ -204,7 +204,7 @@ By default, access tokens are not persisted anywhere.  There are some built-in m
   - `FileTokenPersitence` Takes the path to a file in which the access token will be saved.
   - `DoctrineCacheTokenPersistence` Takes a `Doctrine\Common\Cache\Cache` object and optionally a key name (default: `guzzle-oauth2-token`) where the access token will be saved.
   - `SimpleCacheTokenPersistence` Takes a PSR-16 SimpleCache and optionally a key name (default: `guzzle-oauth2-token`) where the access token will be saved. This allows any PSR-16 compatible cache to be used.
-  - `LaravelCacheTokenPersistence` Takes an `Illuminate\Contracts\Cache\Repository` object and optionally a key name (default: `guzzle-oauth2-token`) where the access token will be saved.
+  - `Laravel5CacheTokenPersistence` Takes an `Illuminate\Contracts\Cache\Repository` object and optionally a key name (default: `guzzle-oauth2-token`) where the access token will be saved.
 
 If you want to use your own persistence layer, you should write your own class that implements `TokenPersistenceInterface`.
 

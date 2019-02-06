@@ -4,17 +4,17 @@ namespace kamermans\OAuth2\Tests\Persistence;
 
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Repository;
-use kamermans\OAuth2\Persistence\LaravelCacheTokenPersistence;
+use kamermans\OAuth2\Persistence\Laravel5CacheTokenPersistence;
 use kamermans\OAuth2\Token\RawToken;
 use kamermans\OAuth2\Token\RawTokenFactory;
 
-class LaravelCacheTokenPersistenceTest extends TokenPersistenceTestBase
+class Laravel5CacheTokenPersistenceTest extends TokenPersistenceTestBase
 {
     protected $cache;
 
     public function getInstance()
     {
-        return new LaravelCacheTokenPersistence($this->cache);
+        return new Laravel5CacheTokenPersistence($this->cache);
     }
 
     public function setUp()
@@ -24,7 +24,7 @@ class LaravelCacheTokenPersistenceTest extends TokenPersistenceTestBase
 
     public function testRestoreTokenCustomKey()
     {
-        $simpleCache = new LaravelCacheTokenPersistence($this->cache, 'foo-bar');
+        $simpleCache = new Laravel5CacheTokenPersistence($this->cache, 'foo-bar');
 
         $factory = new RawTokenFactory();
         $token = $factory([
