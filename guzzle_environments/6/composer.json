@@ -8,7 +8,7 @@
     ],
     "require-dev": {
         "guzzlehttp/guzzle": "~6",
-        "phpunit/phpunit": ">=4",
+        "phpunit/phpunit": ">=4 <8",
         "doctrine/cache": "~1.5",
         "psr/simple-cache": "^1.0",
         "symfony/cache": "^3.4",

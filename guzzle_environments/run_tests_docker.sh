@@ -2,6 +2,8 @@
 
 DIR=$(dirname $(readlink -f $0))
 TESTS=${1:-all}
+IMAGE="composer/composer:php5-alpine"
+#IMAGE="composer/composer:latest"
 
 function run_tests()
 {
@@ -15,7 +17,7 @@ function run_tests()
         -v $DIR/../:/test \
         --workdir=/test/guzzle_environments/$GUZZLE_VER \
         --entrypoint=/bin/sh \
-        composer/composer:php5-alpine \
+        $IMAGE \
         -c '([ -f vendor/bin/phpunit ] || composer update); vendor/bin/phpunit -vvvv'
 }
 

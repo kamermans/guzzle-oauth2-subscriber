@@ -444,7 +444,12 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
         $signer = new \kamermans\OAuth2\Signer\AccessToken\BearerAuth();
 
-        $mock_persistence = $this->createMock('\kamermans\OAuth2\Persistence\TokenPersistenceInterface');
+        $mock_persistence = $this->getMockBuilder('\kamermans\OAuth2\Persistence\TokenPersistenceInterface')
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->getMock();
 
         $mock_persistence->method('restoreToken')
             ->willReturn($cached_token);
