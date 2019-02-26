@@ -448,7 +448,6 @@ class OAuth2MiddlewareTest extends BaseTestCase
             ->disableOriginalConstructor()
             ->disableOriginalClone()
             ->disableArgumentCloning()
-            ->disallowMockingUnknownTypes()
             ->getMock();
 
         $mock_persistence->method('restoreToken')
