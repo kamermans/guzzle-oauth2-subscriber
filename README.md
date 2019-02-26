@@ -143,6 +143,9 @@ $response = $client->get('http://somehost/some_secure_url');
 echo "Status: ".$response->getStatusCode()."\n";
 ```
 
+### Authorization Code Example
+There is a full example of using the `AuthorizationCode` grant type with a `RefreshToken` in the `examples/` directory.
+
 ### Grant Types
 The following OAuth grant types are supported directly, and you can always create your own by implementing `kamermans\OAuth2\GrantType\GrantTypeInterface`:
  - `AuthorizationCode`
@@ -205,8 +208,9 @@ By default, access tokens are not persisted anywhere.  There are some built-in m
   - `DoctrineCacheTokenPersistence` Takes a `Doctrine\Common\Cache\Cache` object and optionally a key name (default: `guzzle-oauth2-token`) where the access token will be saved.
   - `SimpleCacheTokenPersistence` Takes a PSR-16 SimpleCache and optionally a key name (default: `guzzle-oauth2-token`) where the access token will be saved. This allows any PSR-16 compatible cache to be used.
   - `Laravel5CacheTokenPersistence` Takes an `Illuminate\Contracts\Cache\Repository` object and optionally a key name (default: `guzzle-oauth2-token`) where the access token will be saved.
+  - `ClosureTokenPersistence` Allows you to define a token persistence provider by providing closures to handle the persistence functions.
 
-If you want to use your own persistence layer, you should write your own class that implements `TokenPersistenceInterface`.
+If you want to use your own persistence layer, you should write your own class that implements `TokenPersistenceInterface` or use the `ClosureTokenPersistence` provider, which is described at the end of this section.
 
 To enable token persistence, you must use the `OAuth2Middleware::setTokenPersistence()` or `OAuth2Subscriber::setTokenPersistence()` method, like this:
 
@@ -220,6 +224,40 @@ $grant_type = new ClientCredentials($reauth_client, $reauth_config);
 $oauth = new OAuth2Middleware($grant_type);
 $oauth->setTokenPersistence($token_persistence);
 ```
+### Closure-Based Token Persistence
+There are plenty of cases where you would like to use your own caching layer to store the OAuth2 data, but there is no adapter included that works with your cache provider.  The `ClosureTokenPersistence` provider makes this case easier by allowing you to define closures that handle the OAuth2 persistence data, as shown in the example below.
+
+```php
+// We'll store everything in an array, but you can use any provider you want
+$cache = [];
+$cache_key = "foo";
+
+// Returns true if the item exists in cache
+$exists = function() use (&$cache, $cache_key) {
+    return array_key_exists($cache_key, $cache);
+};
+
+// Sets the given $value array in cache
+$set = function(array $value) use (&$cache, $cache_key) {
+    $cache[$cache_key] = $value;
+};
+
+// Gets the previously-stored value from cache (or null)
+$get = function() use (&$cache, $cache_key, $exists) {
+    return $exists()? $cache[$cache_key]: null;
+};
+
+// Deletes the previously-stored value from cache (if exists)
+$delete = function() use (&$cache, $cache_key, $exists) {
+    if ($exists()) {
+        unset($cache[$cache_key]);
+    }
+};
+
+$persistence = new ClosureTokenPersistence($set, $get, $delete, $exists);
+```
+
+> Note: The format of the token data is a PHP associative array.  You can flatten the array with `serialize()` or `json_encode()` or whatever else you want before storing it, but remember to decode it back to an array in `get()` before returning it!  Also, the above example is not very thread-safe, so if you have a high level of concurrency, you will need to find more atomic ways to handle this logic, or at least wrap things with `try/catch` and handle things gracefully.
 
 Please see the `src/Persistence/` directory for more information on persistence.
 
