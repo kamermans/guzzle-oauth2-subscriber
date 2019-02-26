@@ -8,7 +8,7 @@
     ],
     "require-dev": {
         "guzzlehttp/guzzle": "~5",
-        "phpunit/phpunit": "~4.0",
+        "phpunit/phpunit": ">=4",
         "doctrine/cache": "~1.5"
     },
     "autoload": {

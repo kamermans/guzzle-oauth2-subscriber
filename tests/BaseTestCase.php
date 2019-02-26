@@ -70,4 +70,13 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         return $request;
     }
+
+    protected function createMock($classname) {
+        // Handle PHPUnit version differences.  This shim can be removed once PHP 5.4 and 5.5 support is dropped.
+        if (method_exists('\PHPUnit_Framework_TestCase', 'createMock')) {
+            return parent::createMock($classname);
+        } else {
+            return parent::getMock($classname);
+        }
+    }
 }
