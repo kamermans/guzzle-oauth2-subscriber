@@ -89,6 +89,14 @@ class AuthorizationCode implements GrantTypeInterface
                 $data['redirect_uri'] = $this->config['redirect_uri'];
             }
 
+            if ($this->config['client_id']) {
+                $data['client_id'] = $this->config['client_id'];
+            }
+
+            if ($this->config['client_secret']) {
+                $data['client_secret'] = $this->config['client_secret'];
+            }
+
             return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
         }
 
@@ -104,6 +112,14 @@ class AuthorizationCode implements GrantTypeInterface
 
         if ($this->config['redirect_uri']) {
             $postBody->setField('redirect_uri', $this->config['redirect_uri']);
+        }
+
+        if ($this->config['client_id']) {
+            $postBody->setField('redirect_uri', $this->config['client_id']);
+        }
+
+        if ($this->config['client_secret']) {
+            $postBody->setField('client_secret', $this->config['client_secret']);
         }
 
         return $postBody;

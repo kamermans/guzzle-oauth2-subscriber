@@ -86,6 +86,14 @@ class RefreshToken implements GrantTypeInterface
                 $data['scope'] = $this->config['scope'];
             }
 
+            if ($this->config['client_id']) {
+                $data['client_id'] = $this->config['client_id'];
+            }
+
+            if ($this->config['client_secret']) {
+                $data['client_secret'] = $this->config['client_secret'];
+            }
+
             return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
         }
 
@@ -99,6 +107,14 @@ class RefreshToken implements GrantTypeInterface
 
         if ($this->config['scope']) {
             $postBody->setField('scope', $this->config['scope']);
+        }
+
+        if ($this->config['client_id']) {
+            $postBody->setField('redirect_uri', $this->config['client_id']);
+        }
+
+        if ($this->config['client_secret']) {
+            $postBody->setField('client_secret', $this->config['client_secret']);
         }
 
         return $postBody;
