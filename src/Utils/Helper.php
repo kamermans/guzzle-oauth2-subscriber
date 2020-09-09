@@ -9,7 +9,7 @@ class Helper
     public static function guzzleIs($operator, $version, $guzzle_version=null)
     {
         if ($guzzle_version === null) {
-            $guzzle_version = G::VERSION;
+            $guzzle_version = (defined('GuzzleHttp\ClientInterface::VERSION')) ? G::VERSION : G::MAJOR_VERSION;
         }
 
         // version_compare considers 5.1.0 > 5.1, but I don't
