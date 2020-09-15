@@ -14,6 +14,7 @@ php:
 
 install:
     - cd guzzle_environments/${GUZZLE_VERSION}
+    - composer self-update
     - composer install
 
 script:
