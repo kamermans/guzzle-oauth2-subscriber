@@ -1,6 +1,7 @@
 #!/bin/bash
 
 DIR=$(dirname $(readlink -f $0))
+
 TESTS=${1:-all}
 IMAGE="composer/composer:php5-alpine"
 #IMAGE="composer/composer:latest"
@@ -25,6 +26,7 @@ if [[ $TESTS = "all" ]]; then
     run_tests 4
     run_tests 5
     run_tests 6
+    run_tests 7
 else
     run_tests $TESTS
 fi

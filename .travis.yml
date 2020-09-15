@@ -14,7 +14,9 @@ php:
 
 install:
     - cd guzzle_environments/${GUZZLE_VERSION}
-    - composer self-update
+    - composer config --global disable-tls true
+    - composer config --global secure-http false
+    - composer config --global repo.packagist composer http://packagist.org
     - composer install
 
 script:
@@ -29,15 +31,17 @@ env:
 matrix:
     exclude:
         - php: 5.4
-          env: GUZZLE_VERSION=6
+          env: GUZZLE_VERSION=5
         - php: 5.4
-          env: GUZZLE_VERSION=7
+          env: GUZZLE_VERSION=6
+        - php: 5.5
+          env: GUZZLE_VERSION=5
         - php: 5.5
           env: GUZZLE_VERSION=6
         - php: 5.6
+          env: GUZZLE_VERSION=5
+        - php: 5.6
           env: GUZZLE_VERSION=6
-        - php: 7.0
-          env: GUZZLE_VERSION=4
         - php: 7.0
           env: GUZZLE_VERSION=5
         - php: 7.0
