@@ -3,8 +3,8 @@
 DIR=$(dirname $(readlink -f $0))
 
 TESTS=${1:-all}
-IMAGE="composer/composer:php5-alpine"
-#IMAGE="composer/composer:latest"
+#IMAGE="composer:php5-alpine"
+IMAGE="composer:latest"
 
 function run_tests()
 {
