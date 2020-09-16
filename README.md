@@ -1,9 +1,9 @@
 # Guzzle OAuth 2.0 Subscriber
 
 > [![Build Status](https://travis-ci.org/kamermans/guzzle-oauth2-subscriber.svg?branch=master)](https://travis-ci.org/kamermans/guzzle-oauth2-subscriber)
-> Tested with Guzzle 4, 5, 6 and PHP 5.4, 5.5, 5.6, 7.0, 7.1, 7.2 and 7.3.
+> Tested with Guzzle 4, 5, 6, 7 and PHP 5.4, 5.5, 5.6, 7.0, 7.1, 7.2, 7.3 and 7.4.
 
-This is an OAuth 2.0 client for Guzzle which aims to be 100% compatible with Guzzle 4, 5, 6 and all future versions within a single package.
+This is an OAuth 2.0 client for Guzzle which aims to be 100% compatible with Guzzle 4, 5, 6, 7 and all future versions within a single package.
 Although I love Guzzle, its interfaces keep changing, causing massive breaking changes every 12 months or so, so I have created this package
 to help reduce the dependency hell that most third-party Guzzle dependencies bring with them.  I wrote the official Guzzle OAuth 2.0 plugin
 which is still on the `oauth2` branch, [over at the official Guzzle repo](https://github.com/guzzle/oauth-subscriber/tree/oauth2), but I
