@@ -57,6 +57,14 @@ class OAuth2Handler
     protected $tokenPersistence;
 
     /**
+     * Callable used to instantiate a blank TokenInterface instance.
+     * Called with no arguments, must return a newly constructed class implementing TokenInterface
+     *
+     * @var callable
+     */
+    protected $newTokenSupplier;
+
+    /**
      * @param GrantTypeInterface $grantType
      * @param GrantTypeInterface $refreshTokenGrantType
      */
@@ -81,6 +89,7 @@ class OAuth2Handler
 
         $this->tokenPersistence = new Persistence\NullTokenPersistence();
         $this->tokenFactory = new Token\RawTokenFactory();
+        $this->newTokenSupplier = function(){ return new Token\RawToken(); };
     }
 
     /**
@@ -123,7 +132,16 @@ class OAuth2Handler
         return $this;
     }
 
+    /**
+     * @param callable $tokenSupplier the new token supplier
+     *
+     * @return self
+     */
+    public function setNewTokenSupplier(callable $tokenSupplier) {
+        $this->newTokenSupplier = $tokenSupplier;
 
+        return $this;
+    }
 
     /**
      * Manually set the access token.
@@ -167,7 +185,7 @@ class OAuth2Handler
     {
         // If token is not set try to get it from the persistent storage.
         if ($this->rawToken === null) {
-            $this->rawToken = $this->tokenPersistence->restoreToken(new Token\RawToken());
+            $this->rawToken = $this->tokenPersistence->restoreToken(call_user_func($this->newTokenSupplier));
         }
 
         // If token is not set or expired then try to acquire a new one...
