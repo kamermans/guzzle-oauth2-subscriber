@@ -37,13 +37,17 @@ class OAuth2Middleware extends OAuth2Handler
     }
 
     /**
-      * Request error event handler.
-      *
-      * Handles unauthorized errors by acquiring a new access token and
-      * retrying the request.
-      *
-      * @param ErrorEvent $event Event received
-      */
+     * Request error event handler.
+     *
+     * Handles unauthorized errors by acquiring a new access token and
+     * retrying the request.
+     *
+     * @param \Psr\Http\Message\RequestInterface $request
+     * @param array                              $options
+     * @param callable                           $handler
+     *
+     * @return callable
+     */
     private function onFulfilled(RequestInterface $request, array $options, $handler)
     {
         return function ($response) use ($request, $options, $handler) {

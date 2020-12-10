@@ -3,8 +3,6 @@
 namespace kamermans\OAuth2;
 
 use GuzzleHttp\Exception\BadResponseException;
-use kamermans\OAuth2\GrantType\GrantTypeInterface;
-use kamermans\OAuth2\Utils\Helper;
 
 /**
  * OAuth2 plugin.
@@ -16,14 +14,14 @@ class OAuth2Handler
     /**
      * The grant type implementation used to acquire access tokens.
      *
-     * @var GrantTypeInterface
+     * @var GrantType\GrantTypeInterface
      */
     protected $grantType;
 
     /**
      * The grant type implementation used to refresh access tokens.
      *
-     * @var GrantTypeInterface
+     * @var GrantType\GrantTypeInterface
      */
     protected $refreshTokenGrantType;
 
@@ -31,34 +29,51 @@ class OAuth2Handler
      * The service in charge of including client credentials into requests.
      * to get an access token.
      *
-     * @var AccessTokenSigner
+     * @var Signer\ClientCredentials\SignerInterface
      */
     protected $clientCredentialsSigner;
 
     /**
      * The service in charge of including the access token into requests.
      *
-     * @var AccessTokenSigner
+     * @var Signer\AccessToken\SignerInterface
      */
     protected $accessTokenSigner;
 
     /**
      * The object including access token.
      *
-     * @var TokenInterface
+     * @var Token\TokenInterface
      */
     protected $rawToken;
 
     /**
      * The service in charge of persisting access token.
      *
-     * @var TokenPersistenceInterface
+     * @var Persistence\TokenPersistenceInterface
      */
     protected $tokenPersistence;
 
     /**
-     * @param GrantTypeInterface $grantType
-     * @param GrantTypeInterface $refreshTokenGrantType
+     * Callable used to instantiate a blank TokenInterface instance.
+     * Called with no arguments, must return a newly constructed class implementing TokenInterface
+     *
+     * @var callable
+     */
+    protected $newTokenSupplier;
+
+    /**
+     * Factory responsible for parsing server token response
+     *
+     * @var callable
+     */
+    protected $tokenFactory;
+
+    /**
+     * @param GrantType\GrantTypeInterface                  $grantType
+     * @param GrantType\GrantTypeInterface|null             $refreshTokenGrantType
+     * @param Signer\ClientCredentials\SignerInterface|null $clientCredentialsSigner
+     * @param Signer\AccessToken\SignerInterface|null       $accessTokenSigner
      */
     public function __construct(
                     GrantType\GrantTypeInterface $grantType,
@@ -81,10 +96,13 @@ class OAuth2Handler
 
         $this->tokenPersistence = new Persistence\NullTokenPersistence();
         $this->tokenFactory = new Token\RawTokenFactory();
+        $this->newTokenSupplier = function(){ return new Token\RawToken(); };
     }
 
     /**
      * @param Signer\ClientCredentials\SignerInterface $signer
+     *
+     * @return self
      */
     public function setClientCredentialsSigner(Signer\ClientCredentials\SignerInterface $signer)
     {
@@ -94,7 +112,9 @@ class OAuth2Handler
     }
 
     /**
-     * @param AccessToken\SignerInterface $signer
+     * @param Signer\AccessToken\SignerInterface $signer
+     *
+     * @return self
      */
     public function setAccessTokenSigner(Signer\AccessToken\SignerInterface $signer)
     {
@@ -105,6 +125,8 @@ class OAuth2Handler
 
     /**
      * @param Persistence\TokenPersistenceInterface $tokenPersistence
+     *
+     * @return self
      */
     public function setTokenPersistence(Persistence\TokenPersistenceInterface $tokenPersistence)
     {
@@ -115,6 +137,8 @@ class OAuth2Handler
 
     /**
      * @param callable $tokenFactory
+     *
+     * @return self
      */
     public function setTokenFactory(callable $tokenFactory)
     {
@@ -123,12 +147,23 @@ class OAuth2Handler
         return $this;
     }
 
+    /**
+     * @param callable $tokenSupplier the new token supplier
+     *
+     * @return self
+     */
+    public function setNewTokenSupplier(callable $tokenSupplier) {
+        $this->newTokenSupplier = $tokenSupplier;
 
+        return $this;
+    }
 
     /**
      * Manually set the access token.
      *
-     * @param string|array|TokenInterface $token An array of token data, an access token string, or a TokenInterface object
+     * @param string|array|Token\TokenInterface $token An array of token data, an access token string, or a TokenInterface object
+     *
+     * @return self
      */
     public function setAccessToken($token)
     {
@@ -161,13 +196,13 @@ class OAuth2Handler
      *
      * @return string|null A valid access token or null if unable to get one
      *
-     * @throws AccessTokenRequestException while trying to run `requestNewAccessToken` method
+     * @throws Exception\AccessTokenRequestException while trying to run `requestNewAccessToken` method
      */
     public function getAccessToken()
     {
         // If token is not set try to get it from the persistent storage.
         if ($this->rawToken === null) {
-            $this->rawToken = $this->tokenPersistence->restoreToken(new Token\RawToken());
+            $this->rawToken = $this->tokenPersistence->restoreToken(call_user_func($this->newTokenSupplier));
         }
 
         // If token is not set or expired then try to acquire a new one...
@@ -189,7 +224,7 @@ class OAuth2Handler
     /**
      * Gets the current Token object
      *
-     * @return Token\RawToken|null
+     * @return Token\TokenInterface|null
      */
     public function getRawToken()
     {
@@ -210,7 +245,7 @@ class OAuth2Handler
     /**
      * Helper method for (callable)tokenFactory
      *
-     * @return TokenInterface
+     * @return Token\TokenInterface
      */
     protected function tokenFactory()
     {
@@ -220,9 +255,7 @@ class OAuth2Handler
     /**
      * Acquire a new access token from the server.
      *
-     * @return TokenInterface|null
-     *
-     * @throws AccessTokenRequestException
+     * @throws Exception\AccessTokenRequestException
      */
     protected function requestNewAccessToken()
     {
