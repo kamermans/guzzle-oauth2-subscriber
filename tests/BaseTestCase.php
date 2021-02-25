@@ -8,7 +8,7 @@ use GuzzleHttp\Message\Request;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 
 if (!class_exists('\PHPUnit\Framework\TestCase')) {
-    require_once __DIR__.'/PHPUniteNamespaceShim.php';
+    require_once __DIR__.'/PHPUnitNamespaceShim.php';
 }
 
 class BaseTestCase extends \PHPUnit\Framework\TestCase
