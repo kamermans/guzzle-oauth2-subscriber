@@ -16,13 +16,17 @@ class SimpleCacheTokenPersistenceTest extends TokenPersistenceTestBase
         return new SimpleCacheTokenPersistence($this->cache);
     }
 
-    public function _setUp()
+    public function doSetUp()
     {
+        if (!class_exists('Symfony\Component\Cache\Simple\ArrayCache')) {
+            $this->markTestSkipped("Symfony Cache < 5 is required for this test");
+        }
         $this->cache = new ArrayCache();
     }
 
     public function testRestoreTokenCustomKey()
     {
+        $this->doSetUp();
         $simpleCache = new SimpleCacheTokenPersistence($this->cache, 'foo-bar');
 
         $factory = new RawTokenFactory();

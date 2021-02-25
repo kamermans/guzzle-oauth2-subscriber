@@ -22,7 +22,7 @@ function run_tests()
         --workdir=/test/guzzle_environments/$GUZZLE_VER \
         --entrypoint=/bin/sh \
         $IMAGE:$DOCKER_TAG \
-        -c 'composer update && vendor/bin/phpunit -vvvv'
+        -c 'composer install && vendor/bin/phpunit -vvvv'
 }
 
 if [[ $TEST = "all" ]]; then
@@ -30,6 +30,7 @@ if [[ $TEST = "all" ]]; then
     run_tests 5 php7.4
     run_tests 6 php7.4
     run_tests 7 php7.4
+    run_tests 7-php8 php8.0
 else
     run_tests $TEST $TAG
 fi

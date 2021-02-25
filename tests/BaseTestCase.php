@@ -54,6 +54,22 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
+
+    protected function customExpectException($type, $msg, $func)
+    {
+        try {
+            $func();
+        } catch (\Exception $e) {
+            $this->assertInstanceOf($type, $e);
+            if ($msg !== '') {
+                $this->assertStringContainsString($msg, $e->getMessage());
+            }
+            return;
+        }
+
+        $this->assertTrue(false, "The test did not throw an exception");
+    }
+
     protected function createRequest($method, $uri, $options=[])
     {
         return Helper::guzzleIs('>=', 6)?

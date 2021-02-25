@@ -17,13 +17,14 @@ class Laravel5CacheTokenPersistenceTest extends TokenPersistenceTestBase
         return new Laravel5CacheTokenPersistence($this->cache);
     }
 
-    public function _setUp()
+    public function doSetUp()
     {
         $this->cache = new Repository(new ArrayStore());
     }
 
     public function testRestoreTokenCustomKey()
     {
+        $this->doSetUp();
         $simpleCache = new Laravel5CacheTokenPersistence($this->cache, 'foo-bar');
 
         $factory = new RawTokenFactory();

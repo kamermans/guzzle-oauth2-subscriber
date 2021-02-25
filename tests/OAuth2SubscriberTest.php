@@ -13,7 +13,7 @@ use kamermans\OAuth2\OAuth2Subscriber;
 
 class OAuth2SubscriberTest extends BaseTestCase
 {
-    public function setUp()
+    public function doSetUp()
     {
         if (Helper::guzzleIs('>=', 6)) {
             $this->markTestSkipped("Guzzle 4 or 5 is required for this test");
