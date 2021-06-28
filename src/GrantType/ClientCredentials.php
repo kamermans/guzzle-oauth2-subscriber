@@ -86,6 +86,10 @@ class ClientCredentials implements GrantTypeInterface
                 $data['scope'] = $this->config['scope'];
             }
 
+            if (!empty($this->config['audience'])) {
+                $data['audience'] = $this->config['audience'];
+            }
+
             return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
         }
 
@@ -96,6 +100,10 @@ class ClientCredentials implements GrantTypeInterface
 
         if ($this->config['scope']) {
             $postBody->setField('scope', $this->config['scope']);
+        }
+
+        if (!empty($this->config['audience'])) {
+            $postBody->setField('audience', $this->config['audience']);
         }
 
         return $postBody;
