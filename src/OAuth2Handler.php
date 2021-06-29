@@ -286,7 +286,7 @@ class OAuth2Handler
 
             $this->rawToken = $this->tokenFactory($rawData);
         } catch (BadResponseException $e) {
-            throw new Exception\AccessTokenRequestException('Unable to request a new access token', $e);
+            throw new Exception\AccessTokenRequestException('Unable to request a new access token: ' . $e->getMessage(), $e);
         }
     }
 }
