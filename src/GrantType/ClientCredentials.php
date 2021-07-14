@@ -73,7 +73,7 @@ class ClientCredentials implements GrantTypeInterface
     }
 
     /**
-     * @return PostBody
+     * @return PostBody|\Psr\Http\Message\StreamInterface
      */
     protected function getPostBody()
     {
@@ -90,7 +90,7 @@ class ClientCredentials implements GrantTypeInterface
                 $data['audience'] = $this->config['audience'];
             }
 
-            return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
+            return Helper::streamFor(http_build_query($data, '', '&'));
         }
 
         $postBody = new PostBody();

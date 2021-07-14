@@ -568,31 +568,4 @@ class OAuth2MiddlewareTest extends BaseTestCase
         $this->assertSame(401, $container[0]['response']->getStatusCode());
         $this->assertSame(401, $container[1]['response']->getStatusCode());
     }
-
-    public function __DISABLED__testOnErrorDoesNotLoop()
-    {
-        // Setup Grant Type
-        $grant = $this->getMockBuilder('\kamermans\OAuth2\GrantType\ClientCredentials')
-            ->setMethods(['getRawData'])
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $grant->expects($this->exactly(0))
-            ->method('getRawData');
-
-        // Setup OAuth2Middleware
-        $sub = new OAuth2Middleware($grant);
-
-        $client = new Client();
-        $request = new Request('GET', '/', [], null, ['auth' => 'oauth']);
-        // This header keeps the subscriber from trying to reauth a reauth request (infinte loop)
-        $request->setHeader('X-Guzzle-Retry', 1);
-        $response = new Response(401);
-        $transaction = $this->getTransaction($client, $request);
-        $except = new RequestException('foo', $request, $response);
-        $event = new ErrorEvent($transaction, $except);
-
-        // Force an onError event, which triggers the signer and grant data processor
-        $sub->onError($event);
-    }
 }

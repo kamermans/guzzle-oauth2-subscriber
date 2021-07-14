@@ -1,6 +1,5 @@
 # Guzzle OAuth 2.0 Subscriber
 
-> [![Build Status](https://travis-ci.org/kamermans/guzzle-oauth2-subscriber.svg?branch=master)](https://travis-ci.org/kamermans/guzzle-oauth2-subscriber)
 > Tested with Guzzle 4, 5, 6, 7 and PHP 5.4, 5.5, 5.6, 7.0, 7.1, 7.2, 7.3 and 7.4.
 
 This is an OAuth 2.0 client for Guzzle which aims to be 100% compatible with Guzzle 4, 5, 6, 7 and all future versions within a single package.

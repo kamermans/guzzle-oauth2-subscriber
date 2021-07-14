@@ -67,7 +67,7 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
     protected function setPostBody($request, array $data=[])
     {
         if (Helper::guzzleIs('>=', 6)) {
-            return $request->withBody(\GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&')));
+            return $request->withBody(Helper::streamFor(http_build_query($data, '', '&')));
         }
 
         $request->setBody(new PostBody($data));

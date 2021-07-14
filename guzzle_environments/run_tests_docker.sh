@@ -14,7 +14,7 @@ function run_tests()
     echo "# Running tests against Guzzle $GUZZLE_VER"
     echo "###############################################"
 
-    docker run -ti --rm \
+    docker run --rm \
         -v $DIR/../:/test \
         --workdir=/test/guzzle_environments/$GUZZLE_VER \
         --entrypoint=/bin/sh \

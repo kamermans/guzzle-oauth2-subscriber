@@ -6,6 +6,29 @@ use GuzzleHttp\ClientInterface as G;
 
 class Helper
 {
+    /**
+     * Create a new stream based on the input type.
+     *
+     * Options is an associative array that can contain the following keys:
+     * - metadata: Array of custom metadata.
+     * - size: Size of the stream.
+     *
+     * @param resource|string|null|int|float|bool|StreamInterface|callable|\Iterator $resource Entity body data
+     * @param array                                                                  $options  Additional options
+     *
+     * @return StreamInterface
+     * @throws \InvalidArgumentException if the $resource arg is not valid.
+     */
+    public static function streamFor($resource = '', array $options = [])
+    {
+        // stream_for was used until GuzzleHttp\Psr7 v1.7.0
+        if (function_exists('GuzzleHttp\Psr7\stream_for')) {
+            return \GuzzleHttp\Psr7\stream_for($resource, $options);
+        }
+
+        return \GuzzleHttp\Psr7\Utils::streamFor($resource, $options);
+    }
+
     public static function guzzleIs($operator, $version, $guzzle_version=null)
     {
         if ($guzzle_version === null) {

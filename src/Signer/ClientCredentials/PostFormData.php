@@ -27,7 +27,7 @@ class PostFormData implements SignerInterface
             $data[$this->clientIdField] = $clientId;
             $data[$this->clientSecretField] = $clientSecret;
 
-            $body_stream = \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
+            $body_stream = Helper::streamFor(http_build_query($data, '', '&'));
             return $request->withBody($body_stream);
         }
 
