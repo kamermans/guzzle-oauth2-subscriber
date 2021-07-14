@@ -127,7 +127,7 @@ class GithubApplication implements GrantTypeInterface
 
         $postBody = json_encode($postBody);
 
-        return Helper::guzzleIs('<', 6)? Stream::factory($postBody): \GuzzleHttp\Psr7\stream_for($postBody);
+        return Helper::guzzleIs('<', 6)? Stream::factory($postBody): Helper::streamFor($postBody);
     }
 
     /**

@@ -70,8 +70,8 @@ class RefreshToken implements GrantTypeInterface
     }
 
     /**
-    * @return PostBody
-    */
+     * @return PostBody|\Psr\Http\Message\StreamInterface
+     */
     protected function getPostBody($refreshToken)
     {
         if (Helper::guzzleIs('>=', '6')) {
@@ -86,7 +86,7 @@ class RefreshToken implements GrantTypeInterface
                 $data['scope'] = $this->config['scope'];
             }
 
-            return \GuzzleHttp\Psr7\stream_for(http_build_query($data, '', '&'));
+            return Helper::streamFor(http_build_query($data, '', '&'));
         }
 
         $postBody = new PostBody();
