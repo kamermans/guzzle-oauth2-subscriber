@@ -2,6 +2,7 @@
 
 namespace kamermans\OAuth2\GrantType\Specific;
 
+use kamermans\OAuth2\GrantType\GrantTypeInterface;
 use kamermans\OAuth2\Signer\ClientCredentials\SignerInterface;
 use HWI\Bundle\OAuthBundle\Security\Http\ResourceOwnerMap;
 use Symfony\Component\Security\Core\SecurityContextInterface;
