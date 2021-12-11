@@ -3,8 +3,9 @@
 DIR=$(dirname $(readlink -f $0))
 
 TESTS=${1:-all}
-#IMAGE="composer:php5-alpine"
-IMAGE="composer:latest"
+#IMAGE="composer:1.9.1" #PHP 7.4.2
+#IMAGE="pathmotion/composer-php-5.6:latest" #PHP 5.6.33
+IMAGE="composer:latest" #PHP Latest Version
 
 function run_tests()
 {

@@ -5,3 +5,4 @@ guzzle_environments/*/vendor/
 guzzle_environments/*/composer.lock
 composer.lock
 internal_examples/
+.idea
