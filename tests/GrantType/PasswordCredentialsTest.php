@@ -26,12 +26,10 @@ class PasswordCredentialsTest extends BaseTestCase
         ]);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage Config is missing the following keys
-     */
     public function testConstructThrowsForMissing()
     {
+        $this->_expectException('InvalidArgumentException');
+        $this->_expectExceptionMessage('Config is missing the following keys');
         $grant = new PasswordCredentials(new Client(), []);
     }
 

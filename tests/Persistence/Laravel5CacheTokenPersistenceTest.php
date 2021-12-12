@@ -17,7 +17,7 @@ class Laravel5CacheTokenPersistenceTest extends TokenPersistenceTestBase
         return new Laravel5CacheTokenPersistence($this->cache);
     }
 
-    public function setUp()
+    public function _setUp()
     {
         $this->cache = new Repository(new ArrayStore());
     }

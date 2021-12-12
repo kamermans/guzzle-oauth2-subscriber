@@ -13,7 +13,7 @@ class FileTokenPersistenceTest extends TokenPersistenceTestBase
         return new FileTokenPersistence($this->testFile);
     }
 
-    public function setUp()
+    public function _setUp()
     {
         $this->testFile = tempnam(sys_get_temp_dir(), "guzzle_phpunit_test_");
         if (file_exists($this->testFile)) {
@@ -21,7 +21,7 @@ class FileTokenPersistenceTest extends TokenPersistenceTestBase
         }
     }
 
-    public function tearDown()
+    public function _tearDown()
     {
         if (file_exists($this->testFile)) {
             unlink($this->testFile);
