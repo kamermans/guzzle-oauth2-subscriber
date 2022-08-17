@@ -51,7 +51,8 @@ class Collection implements
     {
         unset($this->data[$offset]);
     }
-
+        
+    #[\ReturnTypeWillChange]
     public function toArray()
     {
         return $this->data;
