@@ -16,7 +16,7 @@ class SimpleCacheTokenPersistenceTest extends TokenPersistenceTestBase
         return new SimpleCacheTokenPersistence($this->cache);
     }
 
-    public function setUp()
+    public function _setUp()
     {
         $this->cache = new ArrayCache();
     }

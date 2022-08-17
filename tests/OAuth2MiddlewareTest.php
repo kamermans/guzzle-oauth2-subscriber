@@ -15,7 +15,7 @@ use kamermans\OAuth2\OAuth2Middleware;
 
 class OAuth2MiddlewareTest extends BaseTestCase
 {
-    public function setUp()
+    public function _setUp()
     {
         if (Helper::guzzleIs('<', 6)) {
             $this->markTestSkipped("Guzzle 6+ is required for this test");
@@ -162,11 +162,9 @@ class OAuth2MiddlewareTest extends BaseTestCase
         $this->assertSame($expected_auth_value, $this->getHeader($container[0]['request'], 'Authorization'));
     }
 
-    /**
-     * @expectedException GuzzleHttp\Exception\ClientException
-     */
     public function testOnErrorDoesNotTriggerForNonOAuthRequests()
     {
+        $this->_expectException('GuzzleHttp\Exception\ClientException');
 
         // A random access token helps avoid false pasitives due to caching
         $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));

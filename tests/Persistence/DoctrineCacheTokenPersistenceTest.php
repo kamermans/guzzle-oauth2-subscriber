@@ -16,7 +16,7 @@ class DoctrineCacheTokenPersistenceTest extends TokenPersistenceTestBase
         return new DoctrineCacheTokenPersistence($this->cache);
     }
 
-    public function setUp()
+    public function _setUp()
     {
         $this->cache = new ArrayCache();
     }
