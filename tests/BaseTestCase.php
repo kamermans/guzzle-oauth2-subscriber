@@ -111,9 +111,19 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
             return $request->withBody(Helper::streamFor(http_build_query($data, '', '&')));
         }
 
-        $request->setBody(new PostBody($data));
+        $postBody = new PostBody();
+        $postBody->replaceFields($data);
+        $request->setBody($postBody);
 
         return $request;
     }
 
+    protected function getJsonValue($request, $field)
+    {
+        $json = (string)$request->getBody();
+
+        $values = json_decode($json, true);
+
+        return array_key_exists($field, $values)? $values[$field]: null;
+    }
 }
