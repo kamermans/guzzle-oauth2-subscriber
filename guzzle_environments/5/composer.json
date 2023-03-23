@@ -20,5 +20,10 @@
         "psr-4": {
             "kamermans\\OAuth2\\Tests\\": "../../tests"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
     }
 }
