@@ -10,8 +10,13 @@ abstract class TokenPersistenceTestBase extends BaseTestCase
 {
     abstract public function getInstance();
 
+    // We have to mock these because PHPUnit broke the function definitions when they added strict typing
+    public function doSetUp() {}
+    public function doTearDown() {}
+
     public function testSaveToken()
     {
+        $this->doSetUp();
         $factory = new RawTokenFactory();
         $token = $factory([
             'access_token' => 'abcdefghijklmnop',
@@ -19,10 +24,12 @@ abstract class TokenPersistenceTestBase extends BaseTestCase
             'expires_in' => 3600,
         ]);
         $this->getInstance()->saveToken($token);
+        $this->doTearDown();
     }
 
     public function testRestoreToken()
     {
+        $this->doSetUp();
         $factory = new RawTokenFactory();
         $token = $factory([
             'access_token' => 'abcdefghijklmnop',
@@ -38,10 +45,12 @@ abstract class TokenPersistenceTestBase extends BaseTestCase
         $token_after = $restoredToken->serialize();
 
         $this->assertEquals($token_before, $token_after);
+        $this->doTearDown();
     }
 
     public function testHasToken()
     {
+        $this->doSetUp();
         $factory = new RawTokenFactory();
         $token = $factory([
             'access_token' => 'abcdefghijklmnop',
@@ -52,10 +61,12 @@ abstract class TokenPersistenceTestBase extends BaseTestCase
         $this->assertFalse($this->getInstance()->hasToken());
         $this->getInstance()->saveToken($token);
         $this->assertTrue($this->getInstance()->hasToken());
+        $this->doTearDown();
     }
 
     public function testDeleteToken()
     {
+        $this->doSetUp();
         $factory = new RawTokenFactory();
         $token = $factory([
             'access_token' => 'abcdefghijklmnop',
@@ -75,5 +86,6 @@ abstract class TokenPersistenceTestBase extends BaseTestCase
         $restoredToken = $persist->restoreToken(new RawToken);
         $this->assertNull($restoredToken);
         $this->assertFalse($persist->hasToken());
+        $this->doTearDown();
     }
 }

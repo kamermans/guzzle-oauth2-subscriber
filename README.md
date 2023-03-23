@@ -163,6 +163,7 @@ When requesting a new access token, we need to send the required credentials to 
 There are two client credentials signers included in `kamermans\OAuth2\Signer\ClientCredentials`:
  - `BasicAuth`: (default) Sends the credentials to the OAuth 2 server using HTTP Basic Auth in the `Authorization` header.
  - `PostFormData`: Sends the credentials to the OAuth 2 server using an HTTP Form Body (`Content-Type: application/x-www-form-urlencoded`).  The Client ID is stored in the field `client_id` and the Client Secret is stored in `client_secret`.  The field names can be changed by passing arguments to the constructor like this: `new PostFormData('MyClientId', 'MySecret');` (which would place the ID and secret into the fields `MyClientId` and `MySecret`).
+ - `Json`: Sends the credentials to the OAuth 2 server using a JSON (`Content-Type: application/json`).  The Client ID is stored in the field `client_id` and the Client Secret is stored in `client_secret`.  The field names can be changed by passing arguments to the constructor like this: `new Json('MyClientId', 'MySecret');` (which would place the ID and secret into the fields `MyClientId` and `MySecret`).
 
 If the OAuth 2 server you are obtaining an access token from does not support the built-in methods, you can either extend one of the built-in signers, or create your own by implementing `kamermans\OAuth2\Signer\ClientCredentials\SignerInterface`, for example:
 

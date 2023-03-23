@@ -1,0 +1,13 @@
+FROM php:8.1
+
+ARG COMPOSER_VERSION
+ARG COMPOSER_HASH
+
+ADD https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar /usr/local/bin/composer
+RUN echo "${COMPOSER_HASH} /usr/local/bin/composer" | sha256sum -c \
+    && chmod +x /usr/local/bin/composer \
+    && php --version \
+    && composer --version \
+    && apt-get update \
+    && apt-get install -y git curl wget unzip \
+    && rm -rf /var/lib/apt/lists/*

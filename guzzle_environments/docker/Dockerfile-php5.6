@@ -1,0 +1,10 @@
+FROM lavoweb/php-5.6
+
+ARG COMPOSER_VERSION
+ARG COMPOSER_HASH
+
+ADD https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar /usr/local/bin/composer
+RUN echo "${COMPOSER_HASH} /usr/local/bin/composer" | sha256sum -c \
+    && chmod +x /usr/local/bin/composer \
+    && php --version \
+    && composer --version

@@ -15,7 +15,7 @@ use kamermans\OAuth2\OAuth2Middleware;
 
 class OAuth2MiddlewareTest extends BaseTestCase
 {
-    public function _setUp()
+    public function doSetUp()
     {
         if (Helper::guzzleIs('<', 6)) {
             $this->markTestSkipped("Guzzle 6+ is required for this test");
@@ -24,6 +24,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
     public function testConstruct()
     {
+        $this->doSetUp();
         $grant = $this->getMockBuilder('\kamermans\OAuth2\GrantType\ClientCredentials')
             //->setConstructorArgs([$client, []])
             ->disableOriginalConstructor()
@@ -34,6 +35,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
     public function testDoesNotTriggerForNonOAuthRequests()
     {
+        $this->doSetUp();
         $reauth_container = [];
         $reauth_history = Middleware::history($reauth_container);
 
@@ -95,6 +97,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
     public function testTriggersSignerAndGrantDataProcessor()
     {
+        $this->doSetUp();
 
         // A random access token helps avoid false pasitives due to caching
         $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
@@ -164,7 +167,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
     public function testOnErrorDoesNotTriggerForNonOAuthRequests()
     {
-        $this->_expectException('GuzzleHttp\Exception\ClientException');
+        $this->doSetUp();
 
         // A random access token helps avoid false pasitives due to caching
         $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
@@ -225,7 +228,9 @@ class OAuth2MiddlewareTest extends BaseTestCase
 //            'auth' => 'oauth',
         ]);
 
-        $response = $client->get('/');
+        $this->customExpectException('GuzzleHttp\Exception\ClientException', '', function() use ($client) {
+            $response = $client->get('/');
+        });
 
         $this->assertCount(0, $reauth_container);
         $this->assertCount(1, $container);
@@ -233,6 +238,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
     public function testOnErrorDoesTriggerForOAuthRequests()
     {
+        $this->doSetUp();
 
         // A random access token helps avoid false pasitives due to caching
         $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
@@ -312,6 +318,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
     public function testOnErrorDoesNotTriggerForNon401Requests()
     {
+        $this->doSetUp();
 
         // A random access token helps avoid false pasitives due to caching
         $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
@@ -395,6 +402,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
     public function testTokenPersistenceIsUsed()
     {
+        $this->doSetUp();
 
         // A random access token helps avoid false pasitives due to caching
         $mock_access_token_cached = md5(microtime(true).mt_rand(100000, 999999));
@@ -479,6 +487,7 @@ class OAuth2MiddlewareTest extends BaseTestCase
 
     public function testOnErrorDoesNotLoop()
     {
+        $this->doSetUp();
         // A random access token helps avoid false pasitives due to caching
         $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
 
@@ -565,5 +574,33 @@ class OAuth2MiddlewareTest extends BaseTestCase
         // Note that if we didn't catch the HTTP 401, it would have thrown an exception
         $this->assertSame(401, $container[0]['response']->getStatusCode());
         $this->assertSame(401, $container[1]['response']->getStatusCode());
+    }
+
+    public function __DISABLED__testOnErrorDoesNotLoop()
+    {
+        $this->doSetUp();
+        // Setup Grant Type
+        $grant = $this->getMockBuilder('\kamermans\OAuth2\GrantType\ClientCredentials')
+            ->setMethods(['getRawData'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $grant->expects($this->exactly(0))
+            ->method('getRawData');
+
+        // Setup OAuth2Middleware
+        $sub = new OAuth2Middleware($grant);
+
+        $client = new Client();
+        $request = new Request('GET', '/', [], null, ['auth' => 'oauth']);
+        // This header keeps the subscriber from trying to reauth a reauth request (infinte loop)
+        $request->setHeader('X-Guzzle-Retry', 1);
+        $response = new Response(401);
+        $transaction = $this->getTransaction($client, $request);
+        $except = new RequestException('foo', $request, $response);
+        $event = new ErrorEvent($transaction, $except);
+
+        // Force an onError event, which triggers the signer and grant data processor
+        $sub->onError($event);
     }
 }

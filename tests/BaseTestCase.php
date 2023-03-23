@@ -8,7 +8,7 @@ use GuzzleHttp\Message\Request;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 
 if (!class_exists('\PHPUnit\Framework\TestCase')) {
-    require_once __DIR__.'/PHPUniteNamespaceShim.php';
+    require_once __DIR__.'/PHPUnitNamespaceShim.php';
 }
 
 class BaseTestCase extends \PHPUnit\Framework\TestCase
@@ -52,6 +52,22 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
                 $message
             );
         }
+    }
+
+
+    protected function customExpectException($type, $msg, $func)
+    {
+        try {
+            $func();
+        } catch (\Exception $e) {
+            $this->assertInstanceOf($type, $e);
+            if ($msg !== '') {
+                $this->assertStringContainsString($msg, $e->getMessage());
+            }
+            return;
+        }
+
+        $this->assertTrue(false, "The test did not throw an exception");
     }
 
     protected function createRequest($method, $uri, $options=[])
@@ -111,9 +127,19 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
             return $request->withBody(Helper::streamFor(http_build_query($data, '', '&')));
         }
 
-        $request->setBody(new PostBody($data));
+        $postBody = new PostBody();
+        $postBody->replaceFields($data);
+        $request->setBody($postBody);
 
         return $request;
     }
 
+    protected function getJsonValue($request, $field)
+    {
+        $json = (string)$request->getBody();
+
+        $values = json_decode($json, true);
+
+        return array_key_exists($field, $values)? $values[$field]: null;
+    }
 }
