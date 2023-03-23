@@ -8,6 +8,8 @@ jobs:
       image: kamermans/composer:php8.1
     steps:
       - name: Composer install
-        run: composer install && vendor/bin/phpunit -vvvv
+        working-directory: ./guzzle_environments/7-php8
+        run: composer install
       - name: PHPUnit
+        working-directory: ./guzzle_environments/7-php8
         run: vendor/bin/phpunit -vvvv
