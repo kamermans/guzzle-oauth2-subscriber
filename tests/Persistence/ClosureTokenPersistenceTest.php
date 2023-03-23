@@ -13,7 +13,7 @@ class ClosureTokenPersistenceTest extends TokenPersistenceTestBase
 
     private $cache = [];
 
-    public function _setUp()
+    public function doSetUp()
     {
         $this->cache = [];
     }

@@ -16,13 +16,14 @@ class DoctrineCacheTokenPersistenceTest extends TokenPersistenceTestBase
         return new DoctrineCacheTokenPersistence($this->cache);
     }
 
-    public function _setUp()
+    public function doSetUp()
     {
         $this->cache = new ArrayCache();
     }
 
     public function testRestoreTokenCustomKey()
     {
+        $this->doSetUp();
         $doctrine = new DoctrineCacheTokenPersistence($this->cache, 'foo-bar');
 
         $factory = new RawTokenFactory();
