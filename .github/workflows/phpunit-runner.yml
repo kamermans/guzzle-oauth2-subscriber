@@ -19,7 +19,14 @@ jobs:
       image: kamermans/composer:php${{ matrix.php }}
     steps:
       - uses: actions/checkout@v3
-      - name: Composer install
+      - name: Cache composer dependencies
+        id: cache-composer
+        uses: actions/cache@v3
+        with:
+          path: guzzle_environments/${{ matrix.guzzle }}
+          key: ${{ runner.os }}-build-php${{ matrix.php }}-guzzle${{ matrix.guzzle }}-composer-${{ hashFiles('guzzle_environments/${{ matrix.guzzle }}/composer.json') }}
+      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        name: Composer install
         working-directory: guzzle_environments/${{ matrix.guzzle }}
         run: composer install
       - name: PHPUnit
