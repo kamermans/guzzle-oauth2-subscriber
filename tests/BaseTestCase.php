@@ -13,6 +13,47 @@ if (!class_exists('\PHPUnit\Framework\TestCase')) {
 
 class BaseTestCase extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @before
+     */
+    public function _callCompatibleSetup()
+    {
+        if (method_exists($this, '_setUp')) {
+            $this->_setUp();
+        }
+    }
+
+    /**
+     * @after
+     */
+    public function _callCompatibleTearDown()
+    {
+        if (method_exists($this, '_tearDown')) {
+            $this->_tearDown();
+        }
+    }
+
+    public function _expectException($exception)
+    {
+        if (method_exists($this, 'expectException')) {
+            $this->expectException($exception);
+        } else {
+            $this->setExpectedException($exception);
+        }
+    }
+
+    public function _expectExceptionMessage($message)
+    {
+        if (method_exists($this,'expectExceptionMessage')) {
+            $this->expectExceptionMessage($message);
+        } else {
+            $this->setExpectedException(
+                $this->getExpectedException() ? $this->getExpectedException() : 'Exception',
+                $message
+            );
+        }
+    }
+
     protected function createRequest($method, $uri, $options=[])
     {
         return Helper::guzzleIs('>=', 6)?

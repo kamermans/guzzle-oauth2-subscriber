@@ -7,8 +7,8 @@
         }
     ],
     "require-dev": {
-        "guzzlehttp/guzzle": "~7",
-        "phpunit/phpunit": ">=4 <8",
+        "guzzlehttp/guzzle": "~7.5",
+        "phpunit/phpunit": ">=4 <10",
         "doctrine/cache": "~1.5",
         "psr/simple-cache": "^1.0",
         "symfony/cache": "^3.4",
@@ -22,6 +22,11 @@
     "autoload-dev": {
         "psr-4": {
             "kamermans\\OAuth2\\Tests\\": "../../tests"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
         }
     }
 }

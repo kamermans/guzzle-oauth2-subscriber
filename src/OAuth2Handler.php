@@ -207,7 +207,6 @@ class OAuth2Handler
 
         // If token is not set or expired then try to acquire a new one...
         if ($this->rawToken === null || $this->rawToken->isExpired()) {
-            $this->tokenPersistence->deleteToken();
 
             // Hydrate `rawToken` with a new access token
             $this->requestNewAccessToken();
@@ -286,7 +285,7 @@ class OAuth2Handler
 
             $this->rawToken = $this->tokenFactory($rawData);
         } catch (BadResponseException $e) {
-            throw new Exception\AccessTokenRequestException('Unable to request a new access token', $e);
+            throw new Exception\AccessTokenRequestException('Unable to request a new access token: ' . $e->getMessage(), $e);
         }
     }
 }
