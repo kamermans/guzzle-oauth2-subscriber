@@ -25,7 +25,7 @@ jobs:
         with:
           path: guzzle_environments/${{ matrix.guzzle }}
           key: ${{ runner.os }}-build-php${{ matrix.php }}-guzzle${{ matrix.guzzle }}-composer-${{ hashFiles('guzzle_environments/**/composer.json') }}
-      - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+      - if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
         name: Composer install
         working-directory: guzzle_environments/${{ matrix.guzzle }}
         run: composer install
