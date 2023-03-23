@@ -5,11 +5,9 @@ jobs:
   matrix-testing:
     strategy:
       matrix:
-        php: ["5.6", "7.3", "7.4", "8.0", "8.1"]
+        php: ["7.3", "7.4", "8.0", "8.1"]
         guzzle: ["4", "5", "6", "7", "7-php8"]
         exclude:
-          - {php: "5.6", guzzle: "7"}
-          - {php: "5.6", guzzle: "7-php8"}
           - {php: "7.3", guzzle: "4"}
           - {php: "7.3", guzzle: "5"}
           - {php: "7.3", guzzle: "7-php8"}
