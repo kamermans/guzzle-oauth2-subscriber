@@ -31,6 +31,7 @@ if [[ $TEST = "all" ]]; then
     run_tests 6 php7.4
     run_tests 7 php7.4
     run_tests 7-php8 php8.0
+    run_tests 7-php8 php8.1
 else
     run_tests $TEST $TAG
 fi
