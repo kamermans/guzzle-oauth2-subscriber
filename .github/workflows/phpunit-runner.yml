@@ -1,0 +1,13 @@
+name: 'PHPUnit Runner'
+run-name: Run PHPUnit tests
+on: [push]
+jobs:
+  guzzle7-php8.1:
+    runs-on: ubuntu-latest
+    container:
+      image: kamermans/composer:php8.1
+    steps:
+      - name: Composer install
+        run: composer install && vendor/bin/phpunit -vvvv
+      - name: PHPUnit
+        run: vendor/bin/phpunit -vvvv
