@@ -207,7 +207,6 @@ class OAuth2Handler
 
         // If token is not set or expired then try to acquire a new one...
         if ($this->rawToken === null || $this->rawToken->isExpired()) {
-            $this->tokenPersistence->deleteToken();
 
             // Hydrate `rawToken` with a new access token
             $this->requestNewAccessToken();
