@@ -2,7 +2,7 @@ name: 'PHPUnit Runner'
 run-name: Run PHPUnit tests
 on: [push]
 jobs:
-  guzzle7-php8.1:
+  guzzle7-php81:
     runs-on: ubuntu-latest
     container:
       image: kamermans/composer:php8.1
