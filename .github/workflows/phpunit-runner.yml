@@ -23,7 +23,7 @@ jobs:
         id: cache-composer
         uses: actions/cache@v3
         with:
-          path: guzzle_environments/${{ matrix.guzzle }}
+          path: guzzle_environments/
           key: ${{ runner.os }}-build-php${{ matrix.php }}-guzzle${{ matrix.guzzle }}-composer-${{ hashFiles('guzzle_environments/**/composer.json') }}
       - if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         name: Composer install
