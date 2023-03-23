@@ -5,7 +5,7 @@ DIR=$(dirname $(readlink -f $0))
 ACTION="$1"
 IMAGE="kamermans/composer"
 COMPOSER_VERSION="2.0.11"
-COMPOSER_HASH="eabf2917072096a94679193762501319e621e2b369a4a1256b2c27f4e6984477"
+COMPOSER_HASH="d6eee0d4637f4bd82bdae098fceda300dcb3ec35bf502604fbe7510933b8f952"
 
 cd $DIR
 for DOCKERFILE in Dockerfile-*; do

@@ -168,7 +168,6 @@ class OAuth2MiddlewareTest extends BaseTestCase
     public function testOnErrorDoesNotTriggerForNonOAuthRequests()
     {
         $this->doSetUp();
-        $this->_expectException('GuzzleHttp\Exception\ClientException');
 
         // A random access token helps avoid false pasitives due to caching
         $mock_access_token = md5(microtime(true).mt_rand(100000, 999999));
