@@ -3,7 +3,7 @@ vendor/
 .php-cs.cache
 guzzle_environments/*/vendor/
 guzzle_environments/*/composer.lock
-guzzle_environments/*/.phpunit.result.cache
+.phpunit.result.cache
 composer.lock
 internal_examples/
 .idea
