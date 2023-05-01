@@ -53,7 +53,7 @@ class ClientCredentials implements GrantTypeInterface
     public function getRawData(SignerInterface $clientCredentialsSigner, $refreshToken = null)
     {
         if (Helper::guzzleIs('>=', 6)) {
-            $request = (new \GuzzleHttp\Psr7\Request('POST', $this->client->getConfig()['base_uri']))
+            $request = (new \GuzzleHttp\Psr7\Request('POST', ''))
                         ->withBody($this->getPostBody())
                         ->withHeader('Content-Type', 'application/x-www-form-urlencoded');
         } else {
