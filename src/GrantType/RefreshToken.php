@@ -65,8 +65,9 @@ class RefreshToken implements GrantTypeInterface
         );
 
         $response = $this->client->send($request);
+        $rawData = json_decode($response->getBody(), true);
 
-        return (array) json_decode($response->getBody(), true);
+        return is_array($rawData) ? $rawData : [];
     }
 
     /**
