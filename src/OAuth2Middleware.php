@@ -83,6 +83,11 @@ class OAuth2Middleware extends OAuth2Handler
     private function onRejected(RequestInterface $request, array $options, $handler)
     {
         return function ($reason) use ($request, $options) {
+            if (class_exists('\GuzzleHttp\Promise\Create')) {
+                return \GuzzleHttp\Promise\Create::rejectionFor($reason);
+            }
+
+            // As of Guzzle Promises 2.0.0, the rejection_for function is deprecated and replaced with Create::rejectionFor
             return \GuzzleHttp\Promise\rejection_for($reason);
         };
     }
