@@ -11,7 +11,7 @@ interface TokenPersistenceInterface
      *
      * @param TokenInterface $token
      *
-     * @return TokenInterface Restored token
+     * @return ?TokenInterface Restored token
      */
     public function restoreToken(TokenInterface $token);
 
