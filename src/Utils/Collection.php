@@ -2,13 +2,19 @@
 
 namespace kamermans\OAuth2\Utils;
 
+use ArrayAccess;
+use Traversable;
+use IteratorAggregate;
+use Countable;
+use ArrayIterator;
+
 /**
  * Key value pair collection object
  */
 class Collection implements
-    \ArrayAccess,
-    \IteratorAggregate,
-    \Countable
+    ArrayAccess,
+    IteratorAggregate,
+    Countable
 {
 
     /** @var array */
@@ -22,44 +28,37 @@ class Collection implements
         $this->data = $data;
     }
 
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): Traversable
     {
-        return new \ArrayIterator($this->data);
+        return new ArrayIterator($this->data);
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): ?string
     {
         return isset($this->data[$offset]) ? $this->data[$offset] : null;
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->data[$offset] = $value;
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->data[$offset]);
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->data[$offset]);
     }
-        
-    #[\ReturnTypeWillChange]
-    public function toArray()
+
+    public function toArray(): array
     {
         return $this->data;
     }
 
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }
@@ -79,7 +78,8 @@ class Collection implements
         array $config = [],
         array $defaults = [],
         array $required = []
-    ) {
+    ): Collection
+    {
         $data = $config + $defaults;
 
         if ($missing = array_diff($required, array_keys($data))) {
@@ -97,7 +97,7 @@ class Collection implements
      *
      * @return Collection
      */
-    public function clear()
+    public function clear(): Collection
     {
         $this->data = [];
 
@@ -111,7 +111,7 @@ class Collection implements
      *
      * @return mixed|null Value of the key or NULL
      */
-    public function get($key)
+    public function get(string $key): string
     {
         return isset($this->data[$key]) ? $this->data[$key] : null;
     }
@@ -120,11 +120,11 @@ class Collection implements
      * Set a key value pair
      *
      * @param string $key   Key to set
-     * @param mixed  $value Value to set
+     * @param string  $value Value to set
      *
      * @return Collection Returns a reference to the object
      */
-    public function set($key, $value)
+    public function set(string $key, string $value): Collection
     {
         $this->data[$key] = $value;
 
@@ -141,7 +141,7 @@ class Collection implements
      *
      * @return Collection Returns a reference to the object.
      */
-    public function add($key, $value)
+    public function add($key, $value): Collection
     {
         if (!array_key_exists($key, $this->data)) {
             $this->data[$key] = $value;
@@ -161,7 +161,7 @@ class Collection implements
      *
      * @return Collection
      */
-    public function remove($key)
+    public function remove(string $key): Collection
     {
         unset($this->data[$key]);
 
@@ -173,7 +173,7 @@ class Collection implements
      *
      * @return array
      */
-    public function getKeys()
+    public function getKeys(): array
     {
         return array_keys($this->data);
     }
@@ -185,7 +185,7 @@ class Collection implements
      *
      * @return bool
      */
-    public function hasKey($key)
+    public function hasKey(string $key): bool
     {
         return array_key_exists($key, $this->data);
     }
@@ -195,12 +195,13 @@ class Collection implements
      *
      * @param string $value Value to search for
      *
-     * @return mixed Returns the key if the value was found FALSE if the value
+     * @return mixed Returns the key if the value was found or NULL if the value
      *     was not found.
      */
-    public function hasValue($value)
+    public function hasValue(string $value): ?string
     {
-        return array_search($value, $this->data, true);
+        $val = array_search($value, $this->data, true);
+        return $val === false ? null : $val;
     }
 
     /**
@@ -210,7 +211,7 @@ class Collection implements
      *
      * @return Collection Returns a reference to the object
      */
-    public function replace(array $data)
+    public function replace(array $data): Collection
     {
         $this->data = $data;
 
@@ -224,7 +225,7 @@ class Collection implements
      *
      * @return Collection Returns a reference to the object.
      */
-    public function merge($data)
+    public function merge(Traversable $data): Collection
     {
         foreach ($data as $key => $value) {
             $this->add($key, $value);
@@ -241,7 +242,7 @@ class Collection implements
      *
      * @return self
      */
-    public function overwriteWith($data)
+    public function overwriteWith(Traversable $data): Collection
     {
         if (is_array($data)) {
             $this->data = $data + $this->data;
@@ -272,7 +273,7 @@ class Collection implements
      *
      * @return Collection
      */
-    public function map(callable $closure, array $context = [])
+    public function map(callable $closure, array $context = []): Collection
     {
         $collection = new static();
         foreach ($this as $key => $value) {
@@ -295,7 +296,7 @@ class Collection implements
      *
      * @return Collection
      */
-    public function filter(callable $closure)
+    public function filter(callable $closure): Collection
     {
         $collection = new static();
         foreach ($this->data as $key => $value) {
