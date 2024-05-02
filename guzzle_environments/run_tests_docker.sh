@@ -26,7 +26,6 @@ function run_tests()
 }
 
 if [[ $TEST = "all" ]]; then
-    run_tests 4 php5.6
     run_tests 5 php7.4
     run_tests 6 php7.4
     run_tests 7 php7.4
