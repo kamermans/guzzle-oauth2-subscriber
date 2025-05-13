@@ -4,7 +4,7 @@ namespace kamermans\OAuth2\Token;
 
 class RawTokenFactory
 {
-    public function __invoke(array $data, RawToken $previousToken = null)
+    public function __invoke(array $data, ?RawToken $previousToken = null)
     {
         $accessToken = null;
         $refreshToken = null;

@@ -77,9 +77,9 @@ class OAuth2Handler
      */
     public function __construct(
                     GrantType\GrantTypeInterface $grantType,
-                    GrantType\GrantTypeInterface $refreshTokenGrantType = null,
-                    Signer\ClientCredentials\SignerInterface $clientCredentialsSigner = null,
-                    Signer\AccessToken\SignerInterface $accessTokenSigner = null
+                    ?GrantType\GrantTypeInterface $refreshTokenGrantType = null,
+                    ?Signer\ClientCredentials\SignerInterface $clientCredentialsSigner = null,
+                    ?Signer\AccessToken\SignerInterface $accessTokenSigner = null
     ) {
         $this->grantType = $grantType;
         $this->refreshTokenGrantType = $refreshTokenGrantType;
